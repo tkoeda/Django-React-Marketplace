@@ -53,9 +53,8 @@ furniture-marketplace/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
-│   │   ├── styles/  # SCSS files
-│   │   ├── utils/
-│   │   │   └── api.js  # Axios instance setup
+│   │   ├── styles/  
+│   │   ├── api.js  # Axios instance setup
 │   │   └── App.js
 │   │
 │   └── public/
@@ -90,10 +89,7 @@ furniture-marketplace/
 2. **Responsive Design**
    - SCSS used for flexible and maintainable styling
    - Mobile-first approach ensuring usability across devices
-
-3. **State Management**
-   - (Assuming you're using a state management solution like Redux or Context API)
-
+     
 ## Getting Started
 
 1. Clone the repository
@@ -117,6 +113,7 @@ furniture-marketplace/
 - Implement real-time messaging between buyers and sellers
 - Add a rating system for users
 - Integrate a payment gateway for in-app transactions
+- Ability to favorite/unfavorite listings
 
 ## Contributing
 
