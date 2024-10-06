@@ -1,0 +1,72 @@
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.container h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.container .listings-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (min-width: 640px) {
+  .container .listings-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 768px) {
+  .container .listings-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .container .listings-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.container .listings-grid .listing-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+.container .listings-grid .listing-card .image-container {
+  position: relative;
+  padding-top: 100%;
+}
+.container .listings-grid .listing-card .image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.container .listings-grid .listing-card .content {
+  padding: 1rem;
+}
+.container .listings-grid .listing-card .content h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.container .listings-grid .listing-card .content p {
+  color: #4B5563;
+  font-weight: 500;
+}
+.container .no-listings {
+  text-align: center;
+  color: #6B7280;
+}/*# sourceMappingURL=home.css.map */

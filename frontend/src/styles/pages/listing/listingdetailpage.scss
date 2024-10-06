@@ -1,0 +1,154 @@
+// ListingDetailPage.scss
+
+.listing-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  .carousel-container {
+    width: 100%;
+    max-width: 800px; // Limit maximum width
+    margin: 0 auto; // Center the carousel
+    aspect-ratio: 1 / 1; // Maintain a consistent aspect ratio
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .slick-slider {
+      height: 100%; // Ensure the slider takes full height of container
+
+      .listing-image {
+        height: 100%; // Full height
+        width: 100%; // Full width
+        object-fit: contain;
+        display: block;
+        background-color: #f0f0f0; // Light background for images that don't fill the space
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain; // Ensure image fits within container without stretching
+        }
+      }
+
+      .slick-dots {
+        bottom: 20px;
+
+        li {
+          button:before {
+            color: white;
+            opacity: 0.75;
+          }
+
+          &.slick-active button:before {
+            color: white;
+            opacity: 1;
+          }
+        }
+      }
+
+      .slick-prev,
+      .slick-next {
+        z-index: 1;
+        &:before {
+          font-size: 30px;
+        }
+      }
+
+      .slick-prev {
+        left: 10px;
+      }
+
+      .slick-next {
+        right: 10px;
+      }
+    }
+  }
+
+  .listing-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px; // Match carousel width
+    margin: 0 auto; // Center align with carousel
+
+    .title-container {
+      h1 {
+        font-size: 2.5rem;
+        color: #333;
+        margin: 0;
+      }
+    }
+
+    .price-container {
+      .price {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #4CAF50;
+      }
+    }
+
+    .description-container {
+      p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #666;
+      }
+    }
+
+    .condition {
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .listing-detail {
+    padding: 10px;
+
+    .carousel-container {
+      aspect-ratio: 1 / 1; // Square aspect ratio for mobile
+
+      .slick-slider {
+        .slick-list {
+          .slick-track {
+            .listing-image {
+              img {
+                max-height: 100%;
+                max-width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .listing-info {
+      .title-container {
+        h1 {
+          font-size: 2rem;
+        }
+      }
+
+      .price-container {
+        .price {
+          font-size: 1.5rem;
+        }
+      }
+
+      .description-container {
+        p {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}

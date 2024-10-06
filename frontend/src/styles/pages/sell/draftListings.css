@@ -1,0 +1,83 @@
+.draft-listings {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.draft-listings h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.draft-listings p {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+.draft-listings ul {
+  list-style-type: none;
+  padding: 0;
+}
+.draft-listings li {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+.draft-listings li:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.draft-listings li a {
+  display: block;
+  padding: 15px;
+  color: #333;
+  text-decoration: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.draft-listings li a:hover {
+  background-color: #f0f0f0;
+}
+.draft-listings li a .draft-title {
+  font-weight: bold;
+}
+.draft-listings li a .draft-price {
+  color: #007bff;
+  font-weight: bold;
+}
+.draft-listings .button.create-new {
+  display: block;
+  width: 200px;
+  margin: 20px auto 0;
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+.draft-listings .button.create-new:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 600px) {
+  .draft-listings {
+    padding: 10px;
+  }
+  .draft-listings h1 {
+    font-size: 1.5rem;
+  }
+  .draft-listings li a {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .draft-listings li a .draft-price {
+    margin-top: 5px;
+  }
+  .draft-listings .button.create-new {
+    width: 100%;
+  }
+}/*# sourceMappingURL=draftListings.css.map */

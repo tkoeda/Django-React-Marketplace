@@ -1,0 +1,42 @@
+.sell-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+
+  h1 {
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 10px;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+
+    &.create-listing {
+      background-color: #28a745;
+      &:hover {
+        background-color: #218838;
+      }
+    }
+
+    &.view-drafts {
+      background-color: #007bff;
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}

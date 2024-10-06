@@ -1,0 +1,103 @@
+// src/styles/pages/sell/draftListings.scss
+
+.draft-listings {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    a {
+      display: block;
+      padding: 15px;
+      color: #333;
+      text-decoration: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+
+      .draft-title {
+        font-weight: bold;
+      }
+
+      .draft-price {
+        color: #007bff;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .button {
+    &.create-new {
+      display: block;
+      width: 200px;
+      margin: 20px auto 0;
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
+  }
+}
+
+// Media query for responsiveness
+@media (max-width: 600px) {
+  .draft-listings {
+    padding: 10px;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    li a {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .draft-price {
+        margin-top: 5px;
+      }
+    }
+
+    .button.create-new {
+      width: 100%;
+    }
+  }
+}
