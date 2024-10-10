@@ -51,10 +51,10 @@ function App() {
                 <Route path="/sell/create" element={<ListingForm />} />
 
                 <Route path="/sell/drafts" element={<DraftListings />} />
-                {/* <Route path="/sell/draft/:listing_id" element={<ListingForm />} /> */}
                 <Route path="/sell/edit/:listing_id" element={<ListingForm />} />
                 # Listing
                 <Route path="/mylistings/:listing_id" element={<ListingDetailPage />} />
+                <Route path="/listings/:listing_id" element={<ListingDetailPage />} />
             </Routes>
             <ConditionalTabBar />
         </BrowserRouter>

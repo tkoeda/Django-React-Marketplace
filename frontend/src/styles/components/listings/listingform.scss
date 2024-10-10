@@ -1,4 +1,6 @@
-// ListingForm.scss
+* {
+  box-sizing: border-box;
+}
 
 .listing-form {
   max-width: 600px;
@@ -8,15 +10,16 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-  .form-group {
-    margin-bottom: 20px;
+  .form-group-title {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+  }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      color: #555;
-    }
+  &__input-group {
+    display: block;
+    margin-bottom: 20px;
 
     input[type="text"],
     input[type="number"],
@@ -50,41 +53,56 @@
     }
   }
 
-  .image-preview-container {
+  .product-image-section {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
+    flex-direction: column;
 
-    .image-preview {
-      position: relative;
-      width: 100px;
-      height: 100px;
+    .product-image-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 24px;
 
-      img {
-        width: 100%;
+      .product-image-item {
+        aspect-ratio: 1 / 1;
+        position: relative;
         height: 100%;
-        object-fit: cover;
-        border-radius: 4px;
-      }
 
-      .remove-btn {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        background-color: rgba(255, 255, 255, 0.7);
-        border: none;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
+        .image-wrapper {
+          position: relative;
+          width: 100%;
+          padding-top: 100%;
+          overflow: hidden;
 
-        &:hover {
-          background-color: rgba(255, 0, 0, 0.7);
-          color: white;
+          .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+          }
+        }
+
+        .remove-btn {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+          background-color: rgba(255, 255, 255, 0.7);
+          border: none;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+
+          &:hover {
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+          }
         }
       }
     }
@@ -92,37 +110,50 @@
 
   .button-group {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 15px;
+    flex-flow: column;
+    align-items: center;
+    justify-content: normal;
+    gap: 10px;
+  }
 
-    .draft-btn,
-    .publish-btn {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 4px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+  .draft-btn,
+  .publish-btn,
+  .delete-btn,
+  .upload-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+
+  .draft-btn {
+    background-color: #f0f0f0;
+    color: #333;
+
+    &:hover {
+      background-color: #e0e0e0;
     }
+  }
 
-    .draft-btn {
-      background-color: #f0f0f0;
-      color: #333;
+  .publish-btn {
+    background-color: #28a745;
+    color: white;
 
-      &:hover {
-        background-color: #e0e0e0;
-      }
+    &:hover {
+      background-color: #218838;
     }
+  }
 
-    .publish-btn {
-      background-color: #28a745;
-      color: white;
+  .upload-btn {
+    background-color: #f0f0f0;
+    color: #333;
 
-      &:hover {
-        background-color: #218838;
-      }
+    &:hover {
+      background-color: #e0e0e0;
     }
   }
 }

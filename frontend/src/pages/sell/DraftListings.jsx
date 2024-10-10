@@ -13,7 +13,6 @@ const DraftListings = () => {
       try {
         const response = await api.get('/api/mylistings/draft/');
         setDrafts(response.data);
-        console.log(response.data);
       } catch (err) {
         setError('Failed to fetch draft listings');
       } finally {
@@ -37,8 +36,21 @@ const DraftListings = () => {
           {drafts.map(draft => (
             <li key={draft.id}>
               <Link to={`/sell/edit/${draft.id}`}>
-                <span className="draft-title">{draft.title}</span>
-                <span className="draft-price">${draft.price}</span>
+                <div className="image-container">
+                  {draft.thumbnail ? (
+                    <picture>
+                      <img src={draft.thumbnail} alt={draft.title} />
+                    </picture>
+                  ) : (
+                    <div className="placeholder-image">
+                      <span className="placeholder-text">No Image</span>
+                    </div>
+                  )}
+                </div>
+                <div className="draft-info">
+                  <span className="draft-title">{draft.title}</span>
+                  <span className="draft-price">${draft.price}</span>
+                </div>
               </Link>
             </li>
           ))}

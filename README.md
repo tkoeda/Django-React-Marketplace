@@ -19,7 +19,7 @@ Furniture Marketplace is a full-stack web application that allows users to buy a
 ### Backend
 - Django
 - Django Rest Framework
-- PostgreSQL database
+- SQLite database
 - AWS S3 for image storage
 - AWS CloudFront for content delivery
 

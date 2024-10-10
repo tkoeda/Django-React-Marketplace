@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "../../api";
 
 import "../../styles/components/listings/ListingForm.css";
@@ -25,16 +25,16 @@ const ListingForm = () => {
         if (listing_id) {
             const fetchListing = async () => {
                 try {
-                    const response = await api.get(`/api/listings/${listing_id}/`);
+                    const response = await api.get(
+                        `/api/listings/${listing_id}/`
+                    );
                     setListing(response.data);
-                    console.log(response.data)
                     if (response.data.images) {
                         setExistingImages(response.data.images);
-                        setImageOrder(response.data.images.map(img => img.id));
-
-
+                        setImageOrder(
+                            response.data.images.map((img) => img.id)
+                        );
                     }
-                    console.log(response.data)
                 } catch (error) {
                     console.error("Error fetching listing:", error);
                 } finally {
@@ -51,15 +51,23 @@ const ListingForm = () => {
 
     const handleImageChange = (e) => {
         const newImages = Array.from(e.target.files);
-        setImages(prevImages => [...prevImages, ...newImages]);
+        setImages((prevImages) => [...prevImages, ...newImages]);
 
         // Create preview URLs for the new images
-        const newPreviewImages = newImages.map(file => URL.createObjectURL(file));
+        const newPreviewImages = newImages.map((file) =>
+            URL.createObjectURL(file)
+        );
         setPreviewImages([...previewImages, ...newPreviewImages]);
     };
 
+    const fileInputRef = useRef(null);
+
+    const handleFileInputClick = () => {
+        fileInputRef.current.click();
+    };
+
     const removeImage = (index, type) => {
-        if (type === 'new') {
+        if (type === "new") {
             const updatedImages = [...images];
             updatedImages.splice(index, 1);
             setImages(updatedImages);
@@ -68,23 +76,34 @@ const ListingForm = () => {
             URL.revokeObjectURL(updatedPreviews[index]);
             updatedPreviews.splice(index, 1);
             setPreviewImages(updatedPreviews);
-        } else if (type === 'existing') {
+        } else if (type === "existing") {
             const updatedExistingImages = [...existingImages];
             const deletedImage = updatedExistingImages.splice(index, 1)[0];
-            console.log(deletedImage.id)
             setExistingImages(updatedExistingImages);
             setDeletedImages([...deletedImages, deletedImage.id]); // Add the deleted image ID to deletedImages
         }
     };
 
-    const handleImageReorder = (dragIndex, hoverIndex) => {
-        const draggedId = imageOrder[dragIndex];
-        const newOrder = [...imageOrder];
-        newOrder.splice(dragIndex, 1);
-        newOrder.splice(hoverIndex, 0, draggedId);
-        setImageOrder(newOrder);
-    };
+    const handleDelete = async () => {
+        if (!listing_id) return; // Don't attempt to delete if there's no listing_id
 
+        if (
+            window.confirm(
+                "Are you sure you want to delete this listing? This action cannot be undone."
+            )
+        ) {
+            try {
+                await api.delete(`/api/listings/${listing_id}/`);
+                navigate("/sell"); // Navigate back to the sell page or wherever appropriate
+            } catch (error) {
+                console.error(
+                    "Error deleting listing:",
+                    error.response?.data || error.message
+                );
+                // Handle error (e.g., show error message to user)
+            }
+        }
+    };
 
     const handleSubmit = async (e, action) => {
         e.preventDefault();
@@ -96,7 +115,7 @@ const ListingForm = () => {
         });
 
         // Set the status based on the action
-        formData.set('status', action === 'publish' ? 'published' : 'draft');
+        formData.set("status", action === "publish" ? "published" : "draft");
 
         // Append new images
         images.forEach((image, index) => {
@@ -112,16 +131,17 @@ const ListingForm = () => {
         imageOrder.forEach((imageId) => {
             formData.append(`image_order`, imageId);
         });
-
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
+       
         try {
             let response;
             if (listing_id) {
-                response = await api.patch(`/api/listings/${listing_id}/`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                });
+                response = await api.patch(
+                    `/api/listings/${listing_id}/`,
+                    formData,
+                    {
+                        headers: { "Content-Type": "multipart/form-data" },
+                    }
+                );
                 navigate("/sell/drafts");
             } else {
                 response = await api.post("/api/listings/", formData, {
@@ -131,20 +151,93 @@ const ListingForm = () => {
                 });
                 navigate("/sell");
             }
-                console.log("Listing Saved:", response.data);
-            } catch (error) {
-                console.error(
-                    "Error creating listing:",
-                    error.response?.data || error.message
-                );
-                // Handle error (e.g., show error message to user)
-            }
-        };
+        } catch (error) {
+            console.error(
+                "Error creating listing:",
+                error.response?.data || error.message
+            );
+            // Handle error (e.g., show error message to user)
+        }
+    };
 
-        return (
-            <form className="listing-form" onSubmit={(e) => e.preventDefault()}>
-                <div className="form-group">
-                    <label htmlFor="title">Title</label>
+    return (
+        <form className="listing-form" onSubmit={(e) => e.preventDefault()}>
+            <section className="product-image-section">
+                <div className="form-group-title">
+                    <span>Product Images</span>
+                </div>
+                <div className="product-image-container">
+                    {existingImages.map((image, index) => (
+                        <div
+                            key={`existing-${index}`}
+                            className="product-image-item"
+                        >
+                            <div className="image-wrapper">
+                                <img
+                                    src={image.image_url}
+                                    alt={`Existing ${index + 1}`}
+                                    className="product-image"
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                className="remove-btn"
+                                onClick={() => removeImage(index, "existing")}
+                                aria-label="Remove image"
+                            >
+                                X
+                            </button>
+                        </div>
+                    ))}
+                    {previewImages.map((preview, index) => (
+                        <div
+                            key={`new-${index}`}
+                            className="product-image-item"
+                        >
+                            <div className="image-wrapper">
+                                <img
+                                    src={preview}
+                                    alt={`Preview ${index + 1}`}
+                                    className="product-image"
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                className="remove-btn"
+                                onClick={() => removeImage(index, "new")}
+                                aria-label="Remove image"
+                            >
+                                X
+                            </button>
+                        </div>
+                    ))}
+                </div>
+                <div className="file-input">
+                    <input
+                        ref={fileInputRef}
+                        id="images"
+                        type="file"
+                        multiple
+                        onChange={handleImageChange}
+                        accept="image/*"
+                        style={{ display: "none" }}
+                    />
+                    <div className="file-input__button">
+                        <button
+                            type="button"
+                            className="upload-btn"
+                            onClick={handleFileInputClick}
+                        >
+                            Upload Photos
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <div className="listing-form__input-group">
+                <label>
+                    <div className="form-group-title">
+                        <span>Title</span>
+                    </div>
                     <input
                         id="title"
                         type="text"
@@ -153,9 +246,13 @@ const ListingForm = () => {
                         onChange={handleChange}
                         required
                     />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="description">Description</label>
+                </label>
+            </div>
+            <section className="listing-form__input-group">
+                <label>
+                    <div className="form-group-title">
+                        <span>Title</span>
+                    </div>
                     <textarea
                         id="description"
                         name="description"
@@ -163,9 +260,13 @@ const ListingForm = () => {
                         onChange={handleChange}
                         required
                     />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="price">Price</label>
+                </label>
+            </section>
+            <section className="listing-form__input-group">
+                <label>
+                    <div className="form-group-title">
+                        <span>Price</span>
+                    </div>
                     <input
                         id="price"
                         type="number"
@@ -174,9 +275,13 @@ const ListingForm = () => {
                         onChange={handleChange}
                         required
                     />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="category">Category</label>
+                </label>
+            </section>
+            <section className="listing-form__input-group">
+                <label>
+                    <div className="form-group-title">
+                        <span>Category</span>
+                    </div>
                     <select
                         id="category"
                         name="category"
@@ -196,9 +301,13 @@ const ListingForm = () => {
                         <option value="WARDROBE">Wardrobe</option>
                         <option value="OTHER">Other</option>
                     </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="condition">Condition</label>
+                </label>
+            </section>
+            <section className="listing-form__input-group">
+                <label>
+                    <div className="form-group-title">
+                        <span>Title</span>
+                    </div>
                     <select
                         id="condition"
                         name="condition"
@@ -208,57 +317,43 @@ const ListingForm = () => {
                     >
                         <option value="">Select Condition</option>
                         <option value="new_with_tags">New with tags</option>
-                        <option value="new_without_tags">New without tags</option>
+                        <option value="new_without_tags">
+                            New without tags
+                        </option>
                         <option value="like_new">Like new</option>
                         <option value="good">Good</option>
                         <option value="fair">Fair</option>
                         <option value="poor">Poor</option>
                     </select>
-                </div>
-                <div className="file-input">
-                    <label htmlFor="images">Images</label>
-                    <input
-                        id="images"
-                        type="file"
-                        multiple
-                        onChange={handleImageChange}
-                        accept="image/*"
-                    />
-                </div>
-                <div className="image-preview-container">
-                {existingImages.map((image, index) => (
-                    <div key={`existing-${index}`} className="image-preview">
-                        <img src={image.image_url} alt={`Existing ${index + 1}`} />
-                        <button 
-                            type="button" 
-                            className="remove-btn" 
-                            onClick={() => removeImage(index, 'existing')} 
-                            aria-label="Remove image"
-                        >X</button>
-                    </div>
-                ))}
-                {previewImages.map((preview, index) => (
-                    <div key={`new-${index}`} className="image-preview">
-                        <img src={preview} alt={`Preview ${index + 1}`} />
-                        <button 
-                            type="button" 
-                            className="remove-btn" 
-                            onClick={() => removeImage(index, 'new')} 
-                            aria-label="Remove image"
-                        >X</button>
-                    </div>
-                ))}
+                </label>
+            </section>
+            <div className="button-group">
+                <button
+                    type="button"
+                    className="draft-btn"
+                    onClick={(e) => handleSubmit(e, "draft")}
+                >
+                    {listing_id ? "Update Draft" : "Save as Draft"}
+                </button>
+                <button
+                    type="button"
+                    className="publish-btn"
+                    onClick={(e) => handleSubmit(e, "publish")}
+                >
+                    {listing_id ? "Update and Publish" : "Publish"}
+                </button>
+                {listing_id && (
+                    <button
+                        type="button"
+                        className="delete-btn"
+                        onClick={handleDelete}
+                    >
+                        Delete Listing
+                    </button>
+                )}
             </div>
-                <div className="button-group">
-                    <button type="button" className="draft-btn" onClick={(e) => handleSubmit(e, 'draft')}>
-                        {listing_id ? "Update Draft" : "Save as Draft"}
-                    </button>
-                    <button type="button" className="publish-btn" onClick={(e) => handleSubmit(e, 'publish')}>
-                        {listing_id ? "Update and Publish" : "Publish"}
-                    </button>
-                </div>
-            </form>
-        );
-    };
+        </form>
+    );
+};
 
-    export default ListingForm;
+export default ListingForm;

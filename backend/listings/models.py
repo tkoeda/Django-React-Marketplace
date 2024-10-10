@@ -87,11 +87,11 @@ class CompressedImageField(models.ImageField):
         file = super().pre_save(model_instance, add)
         if file and not file._committed:
             image = Image.open(file)
-            
+
             # Convert image to RGB if it's not
-            if image.mode != 'RGB':
-                image = image.convert('RGB')
-            
+            if image.mode != "RGB":
+                image = image.convert("RGB")
+
             # Calculate dimensions for center crop
             width, height = image.size
             if width > height:
@@ -104,27 +104,28 @@ class CompressedImageField(models.ImageField):
                 top = (height - width) // 2
                 right = width
                 bottom = top + width
-            
+
             # Crop to square
             image = image.crop((left, top, right, bottom))
-            
+
             # Resize to 1080x1080
             image = image.resize((self.size, self.size), Image.LANCZOS)
-            
+
             output = io.BytesIO()
-            image.save(output, format='JPEG', quality=self.quality, optimize=True)
+            image.save(output, format="JPEG", quality=self.quality, optimize=True)
             output.seek(0)
-            
+
             # Generate a new filename without random strings
             new_filename = listing_path(model_instance, file.name)
-            
+
             # Save the compressed image
             model_instance.image.save(new_filename, output, save=False)
-            
+
             # Close the original file to prevent it from being saved
             file.close()
-        
+
         return model_instance.image
+
 
 class ListingImage(models.Model):
     listing = models.ForeignKey(
@@ -151,17 +152,12 @@ class ListingImage(models.Model):
             if old_instance.image != self.image:
                 old_instance.image.delete(save=False)
         super().save(*args, **kwargs)
+        
 
-    def delete(self, *args, **kwargs):
-        # Delete the files from S3
-        self.image.delete(save=False)
-        super().delete(*args, **kwargs)
-
-
-# @receiver(post_delete, sender=ListingImage)
-# def delete_s3_image(sender, instance, **kwargs):
-#     # Delete the file from S3
-#     instance.image.delete(save=False)
+@receiver(post_delete, sender=ListingImage)
+def delete_s3_image(sender, instance, **kwargs):
+    # Delete the file from S3
+    instance.image.delete(save=False)
 
 
 @receiver(post_delete, sender=FurnitureListing)
@@ -169,7 +165,6 @@ def delete_listing_images(sender, instance, **kwargs):
     # Delete all associated images when a listing is deleted
     for image in instance.images.all():
         image.delete()
-
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

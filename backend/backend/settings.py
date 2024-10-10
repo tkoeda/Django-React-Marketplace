@@ -13,13 +13,21 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
+import environ
 import os
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ENV_FILE_PATH = os.path.join((os.path.dirname(BASE_DIR)), '.env')
+
+environ.Env.read_env(ENV_FILE_PATH)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -156,11 +164,15 @@ AUTH_USER_MODEL = 'users.User'
 
 # S3 Configuration
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')  # Replace with your actual bucket name
-AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')  # Replace with your actual bucket name
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 AWS_QUERYSTRING_EXPIRE = 600
-AWS_S3_CUSTOM_DOMAIN = os.getenv('CLOUDFRONT_DISTRIBUTION_DOMAIN_NAME')
+AWS_S3_CUSTOM_DOMAIN = env('CLOUDFRONT_DISTRIBUTION_DOMAIN_NAME')
+# AWS_CLOUDFRONT_KEY_ID = env.str('AWS_CLOUDFRONT_KEY_ID').strip()
+# AWS_CLOUDFRONT_KEY = env.str('AWS_CLOUDFRONT_KEY', multiline=True).encode('ascii').strip()
+
+

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Routes, Route, NavLink } from "react-router-dom";
 import api from "../../api";
-import "../../styles/components/listings/ListingsTabs.css";
+import "../../styles/components/mypage/ListingsTabs.css";
 
 const ListingsTabs = () => {
     const navigate = useNavigate();
@@ -17,7 +17,6 @@ const ListingsTabs = () => {
     ];
 
     useEffect(() => {
-        console.log(location.pathname.split('/').pop() || 'published')
         const tab = location.pathname.split('/').pop() || 'published';
         fetchListings(tab);
     }, [location]);
@@ -43,11 +42,7 @@ const ListingsTabs = () => {
     };
 
     const renderListing = (listing) => (
-        <div
-            key={listing.id}
-            className="listing-item"
-            onClick={() => handleListingClick(listing.id)}
-        >
+        <div key={listing.id} className="listing-item" onClick={() => handleListingClick(listing.id)}>
             <div className="listing-image">
                 {listing.thumbnail ? (
                     <img src={listing.thumbnail} alt={listing.title} />
@@ -55,9 +50,15 @@ const ListingsTabs = () => {
                     <div className="placeholder-image">No Image</div>
                 )}
             </div>
-            <h3>{listing.title}</h3>
-            <div className="listing-footer">
-                <span className="price">${listing.price}</span>
+            <div className="listing-details">
+                <h3>{listing.title}</h3>
+                <p className="category">{listing.category}</p>
+                <p className="description">{listing.description}</p>
+                <div className="listing-footer">
+                    <span className="price">${listing.price}</span>
+                    <span className="condition">{listing.condition}</span>
+                    <span className="status">{listing.status}</span>
+                </div>
             </div>
         </div>
     );
