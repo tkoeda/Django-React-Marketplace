@@ -11,7 +11,6 @@ import logging
 import json
 import time
 from backend.decorators import profile
-import uuid
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
@@ -116,80 +115,73 @@ class ListingDetailSerializer(serializers.ModelSerializer):
                     listing=listing, image=update["image"], order=update["order"]
                 )
         return listing
-
-    @transaction.atomic
+    
     def update(self, instance, validated_data):
         print(f"Updating listing {instance.id}")
-        request = self.context.get('request')
+        request = self.context.get("request")
         if request:
-            start_time = time.time()
-            image_updates = json.loads(request.data.get('image_updates', '[]'))
-            json_load_time = time.time() - start_time
-            print(f"JSON loading time: {json_load_time}")
+            image_updates = json.loads(request.data.get("image_updates", "[]"))
 
-            start_time = time.time()
+            # Update the listing fields
             for attr, value in validated_data.items():
                 setattr(instance, attr, value)
             instance.save()
-            instance_update_time = time.time() - start_time
-            print(f"Instance update time: {instance_update_time}")
 
-            logger.info("request files %s", request.FILES)
+            # Handle image updates
             if image_updates:
-                start_time = time.time()
                 self.handle_image_updates(instance, image_updates, request.FILES)
-                image_update_time = time.time() - start_time
-                print(f"Image update time: {image_update_time}")
-
+        print(validated_data)
         return instance
 
+    @profile
     def handle_image_updates(self, instance, image_updates, files):
-        existing_images = {str(img.id): img for img in instance.images.all()}
-        images_to_delete = []
+        existing_images = {
+            str(img.id): img
+            for img in instance.images.filter(
+                id__in=[
+                    update.get("id") for update in image_updates if update.get("id")
+                ]
+            )
+        }
         images_to_update = []
         images_to_create = []
-        
-        for update in image_updates:
-            image_id = update.get("id")
-            order = update.get("order")
-            delete = update.get("delete")
+        image_ids_to_keep = []
 
-            if delete:
-                if image_id:
-                    images_to_delete.append(image_id)
-            elif image_id:
-                if image_id in existing_images:
-                    existing_images[image_id].order = order
-                    images_to_update.append(existing_images[image_id])
+        for index, update in enumerate(image_updates):
+            image_id = update.get("id")
+            if image_id:
+                if not update.get("delete"):
+                    image_ids_to_keep.append(image_id)
+                    existing_images[str(image_id)].order = update["order"]
+                    images_to_update.append(existing_images[str(image_id)])
             else:
-                file_key = f"image_{order - 1}"
+                file_key = f"image_{index}"
                 if file_key in files:
-                    # Generate a unique filename for the new image
-                    unique_filename = f"{uuid.uuid4()}{files[file_key].name}"
                     images_to_create.append(
                         ListingImage(
                             listing=instance,
                             image=files[file_key],
-                            order=order,
-                            image_name=unique_filename  # Add this field to your ListingImage model
+                            order=update["order"],
                         )
                     )
 
         # Delete images
-        for image_id in images_to_delete:
-            image = ListingImage.objects.get(id=image_id)
-            image.image.delete(save=False)  # Delete the file from S3
-            image.delete()  # Delete the database record
+        ListingImage.objects.filter(listing=instance).exclude(id__in=image_ids_to_keep).delete()
 
-        # Update existing images
-        ListingImage.objects.bulk_update(images_to_update, ['order'])
+        # Update order of existing images
+        if images_to_update:
+            ListingImage.objects.bulk_update(images_to_update, ["order"])
 
         # Create new images
-        for new_image in images_to_create:
-            new_image.save()  # Save each new image individually to trigger the custom save method
+        if images_to_create:
+            ListingImage.objects.bulk_create(images_to_create)
 
-        logger.info(f"Updated listing {instance.id}: {len(images_to_delete)} deleted, {len(images_to_update)} updated, {len(images_to_create)} created")
-         
+        # logger.info(f"Received image updates: {image_updates}")
+        # logger.info(f"Updated image order: {new_order}")
+        # logger.info(f"Images to delete: {images_to_delete}")
+        # logger.info(f"Images to create: {len(images_to_create)}")
+
+
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     listing = serializers.PrimaryKeyRelatedField(

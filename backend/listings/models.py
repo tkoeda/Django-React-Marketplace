@@ -16,7 +16,7 @@ def listing_path(instance, filename):
     ext = "jpg"
     ext = filename.split(".")[-1]
 
-    return f"listings/{instance.listing.id}/{instance.listing.id}-{instance.order}{ext}"
+    return f"listings/{instance.listing.id}/{instance.image_name}{ext}"
 
 
 class FurnitureListing(models.Model):
@@ -135,6 +135,7 @@ class ListingImage(models.Model):
         storage=S3Boto3Storage(),
         upload_to=listing_path,
     )
+    image_name = models.CharField(max_length=255, unique=True, blank=True)
     order = models.PositiveIntegerField(default=1)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
@@ -146,8 +147,9 @@ class ListingImage(models.Model):
         return f"Image {self.order} for Listing {self.listing.id}"
 
     def save(self, *args, **kwargs):
+        if not self.image_name:
+            self.image_name = f"{uuid.uuid4()}{self.image.name}"
         if self.pk:
-            # If this is an update, delete the old image
             old_instance = ListingImage.objects.get(pk=self.pk)
             if old_instance.image != self.image:
                 old_instance.image.delete(save=False)

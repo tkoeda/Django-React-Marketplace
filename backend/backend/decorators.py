@@ -1,4 +1,13 @@
-from rest_framework.decorators import api_view, renderer_classes
-from rest_framework.renderers import JSONRenderer
-from functools import wraps
+import cProfile
+import pstats
 
+def profile(func):
+    def wrapper(*args, **kwargs):
+        profile = cProfile.Profile()
+        try:
+            return profile.runcall(func, *args, **kwargs)
+        finally:
+            ps = pstats.Stats(profile)
+            ps.sort_stats('cumulative')
+            ps.print_stats()
+    return wrapper

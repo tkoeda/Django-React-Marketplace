@@ -8,10 +8,17 @@ import { Link } from 'react-router-dom';
 import api from "../../api";
 import "../../styles/pages/home/home.css";
 
+interface Listing {
+    id: number;
+    title: string;
+    price: number;
+    thumbnail: string;
+}
+
 function Home() {
-    const [listings, setListings] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [listings, setListings] = useState<Listing[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
         getListings();
@@ -23,6 +30,7 @@ function Home() {
         try {
             const response = await api.get(`/api/homepage/`);
             setListings(response.data.results);
+            console.log(response.data.results)
         } catch (error) {
             console.error("Error fetching listings:", error);
             setError(
