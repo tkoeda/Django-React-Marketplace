@@ -4,11 +4,91 @@
 Furniture Marketplace is a full-stack web application that allows users to buy and sell furniture items. It features a React frontend for a smooth user experience and a Django backend for robust data management and API services. The application utilizes AWS S3 for image storage and CloudFront for efficient content delivery.
 
 ## Key Features
-- User authentication and authorization
-- Listing creation, management, and browsing
-- Image upload and management for listings, using AWS S3 and CloudFront
-- Search and filter functionality for furniture items
-- Responsive design for various devices
+- [x] User authentication and authorization
+- [x] Listing creation, management, and browsing
+- [x] Image upload and management for listings, using AWS S3 and CloudFront
+- [x] Search and filter functionality for furniture items
+- [x] Responsive design for various devices
+- [ ] Connect a payment service (Stripe)
+
+## Setup Instructions
+
+### Prerequisites
+- Python 3.8 or higher
+- Node.js and npm
+- AWS account with S3 and CloudFront access
+- Git
+
+### Initial Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/tkoeda/Django-React-Marketplace.git
+   cd Django-React-Marketplace
+   ```
+
+### Backend Setup
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+
+2. Install required Python packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Create a `.env` file in the root directory and add the following configuration:
+   ```env
+   VITE_API_URL=http://127.0.0.1:8000 
+
+   # S3 Configuration
+   USE_S3=True
+   AWS_ACCESS_KEY_ID=your_access_key_id
+   AWS_SECRET_ACCESS_KEY=your_secret_access_key
+   AWS_STORAGE_BUCKET_NAME=your_bucket_name
+   AWS_S3_REGION_NAME=your_region
+   AWS_S3_FILE_OVERWRITE=False
+   AWS_DEFAULT_ACL=False
+   DEFAULT_FILE_STORAGE=storages.backends.s3.S3Storage 
+   
+   # CloudFront Configuration
+   CLOUDFRONT_DISTRIBUTION_DOMAIN_NAME=your_cloudfront_domain
+   AWS_CLOUDFRONT_KEY_ID=your_key_id
+   AWS_CLOUDFRONT_KEY=your_key
+   ```
+
+4. For AWS S3 and CloudFront setup, follow the tutorial at: [AWS S3 Setup Tutorial](https://www.youtube.com/watch?v=RsiXzwesNLQ)
+   - Create an S3 bucket
+   - Configure CORS settings
+   - Set up CloudFront distribution
+   - Generate necessary access keys
+   - Update the `.env` file with your credentials
+
+5. Run migrations:
+   ```bash
+   python manage.py migrate
+   ```
+
+6. Start the Django development server:
+   ```bash
+   python manage.py runserver
+   ```
+
+### Frontend Setup
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
 ## Tech Stack
 ### Frontend
