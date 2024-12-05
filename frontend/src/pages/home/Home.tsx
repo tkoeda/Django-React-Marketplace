@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import {
     LoadingSpinner,
     LoadingOverlay,
-} from "../../components/LoadingComponent";
+} from "../../components/loadingcomponent/LoadingComponent";
 import { Link } from 'react-router-dom';
 
 import api from "../../api";
-import "../../styles/pages/home/home.css";
+import "./Home.css";
 
 interface Listing {
     id: number;

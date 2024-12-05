@@ -1,0 +1,40 @@
+:root {
+  /* Breakpoints */
+  --mobile-breakpoint: 768px;
+  /* Colors */
+  /* Background */
+  --color-background-primary: #222;
+  --color-background-primary-highlight: #2d2d2d;
+  --color-background-secondary: #2d2d2d;
+  --color-background-secondary-highlight: #333;
+  --color-background-attention: #da3e50;
+  --color-background-attention-highlight: #a72030;
+  --color-border-attention: #da3e50;
+  --color-border-attention-highlight: #a72030;
+  --color-text-primary: #e5e5e5;
+  --color-text-placeholder: #686868;
+  --color-text-inverse: #222;
+  --color-text-attention: #da3e50;
+  --color-text-attention-highlight: #a72030;
+  /* Typography */
+  --font-size-base: 1rem;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #222;
+  color: #e5e5e5;
+  margin: 0;
+  padding: 0;
+}/*# sourceMappingURL=global.css.map */

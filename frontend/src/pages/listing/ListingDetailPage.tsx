@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api";
 import Slider from "react-slick";
-import "../../styles/pages/listing/listingdetailpage.css";
+import "./ListingDetailPage.css";
+import PurchaseButton from "../../components/purchasebutton/PurchaseButton";
 
 function ListingDetailPage() {
     const [listing, setListing] = useState({});
@@ -61,12 +62,15 @@ function ListingDetailPage() {
         }
     };
 
+    const handlePurchaseSuccess = (data) => {
+        navigate("/"); 
+    };
+
     if (isLoading) {
         return <div>Loading listing...</div>;
     }
 
     const isOwner = currentUserId === listing.seller?.id?.toString();
-
 
     var settings = {
         dots: true,
@@ -118,13 +122,10 @@ function ListingDetailPage() {
                         </button>
                     </>
                 ) : (
-                    <button
-                        type="button"
-                        className="buy-btn"
-                        onClick={(e) => handleSubmit(e, "buy")}
-                    >
-                        Buy
-                    </button>
+                    <PurchaseButton
+                        listingId={listing.id}
+                        onPurchaseSuccess={handlePurchaseSuccess}
+                    />
                 )}
             </div>
         </div>

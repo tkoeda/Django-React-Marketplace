@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, NavLink, useNavigate, useLocation } from "react-router-dom";
-import ListingsTabs from "../../components/mypage/ListingsTabs";
-import "../../styles/pages/mypage/mypage.css";
+import ListingsTab from "../../components/mypage/listingstab/ListingsTab";
+import PurchasesTab from "../../components/mypage/purchasestab/PurchasesTab";
+import "./MyPage.css";
 
 const MyPage = () => {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ const MyPage = () => {
                     <span>Liked</span>
                 </NavLink>
                 <NavLink 
-                    to="/mypage/bought"
+                    to="/mypage/purchases"
                     className={({ isActive }) => `grid-button ${isActive ? "active" : ""}`}
                 >
                     <span className="button-icon">🛍️</span>
@@ -48,7 +49,7 @@ const MyPage = () => {
                 <Route path="listings/*" element={
                     <div className="section-content">
                         <h2 className="section-title">My Listings</h2>
-                        <ListingsTabs />
+                        <ListingsTab />
                     </div>
                 } />
                 <Route path="liked" element={
@@ -57,10 +58,10 @@ const MyPage = () => {
                         <p>Liked items will be displayed here.</p>
                     </div>
                 } />
-                <Route path="bought" element={
+                <Route path="purchases/*" element={
                     <div className="section-content">
-                        <h2 className="section-title">Bought Items</h2>
-                        <p>Bought items will be displayed here.</p>
+                        <h2 className="section-title">Purchased Items</h2>
+                        <PurchasesTab />
                     </div>
                 } />
             </Routes>

@@ -1,0 +1,37 @@
+.sell-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+.sell-container h1 {
+  margin-bottom: 30px;
+  color: #333;
+}
+.sell-container .button-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.sell-container .button {
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 10px;
+  text-decoration: none;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+.sell-container .button.create-listing {
+  background-color: #28a745;
+}
+.sell-container .button.create-listing:hover {
+  background-color: #218838;
+}
+.sell-container .button.view-drafts {
+  background-color: #007bff;
+}
+.sell-container .button.view-drafts:hover {
+  background-color: #0056b3;
+}/*# sourceMappingURL=Sell.css.map */

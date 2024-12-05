@@ -9,6 +9,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "esModuleInterop": true, 
   },
   "include": ["./src/**/*"]
 }

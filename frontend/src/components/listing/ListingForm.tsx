@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import api from "../../api";
-import ImageUploader from "../imageuploader/ImageUploader";
+import ImageUploader from "./ImageUploader";
 import ButtonGroup from "../buttongroup/ButtonGroup";
 import { TextInput, TextArea, SelectInput } from "../inputs/FormInputs";
-import "../../styles/components/listings/ListingForm.css";
+import "./ListingForm.css";
 import { useNavigate, useParams } from "react-router-dom";
 
 interface Listing {
@@ -56,6 +56,7 @@ function ListingForm(): JSX.Element {
                         `/api/listings/${listing_id}/`
                     );
                     setListing(response.data);
+                    console.log("response.data", response.data);
                     if (response.data.images) {
                         setDisplayImages(
                             response.data.images.map(
@@ -116,20 +117,14 @@ function ListingForm(): JSX.Element {
     const handleDelete = async () => {
         if (!listing_id) return; // Don't attempt to delete if there's no listing_id
 
-        if (
-            window.confirm(
-                "Are you sure you want to delete this listing? This action cannot be undone."
-            )
-        ) {
-            try {
-                await api.delete(`/api/listings/${listing_id}/`);
-                navigate("/sell"); // Navigate back to the sell page or wherever appropriate
-            } catch (error) {
-                console.error(
-                    "Error deleting listing:",
-                    error instanceof Error ? error.message : String(error)
-                );
-            }
+        try {
+            await api.delete(`/api/listings/${listing_id}/`);
+            navigate("/sell"); // Navigate back to the sell page or wherever appropriate
+        } catch (error) {
+            console.error(
+                "Error deleting listing:",
+                error instanceof Error ? error.message : String(error)
+            );
         }
     };
 
@@ -167,7 +162,7 @@ function ListingForm(): JSX.Element {
         // Append files separately
         displayImages.forEach((img, index) => {
             if (img.file) {
-                formData.append(`image_${index}`, img.file);
+                formData.append(`image_${index + 1}`, img.file);
             }
         });
 
@@ -255,6 +250,8 @@ function ListingForm(): JSX.Element {
                 label="Price"
                 id="price"
                 name="price"
+                min="0"
+                step="0.01"
                 type="number"
                 value={listing.price}
                 onChange={handleChange}

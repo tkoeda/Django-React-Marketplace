@@ -20,7 +20,7 @@ class FurnitureListingAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('user', 'title', 'description', 'price')
+            'fields': ('seller', 'title', 'description', 'price')
         }),
         ('Details', {
             'fields': ('condition', 'status')
@@ -32,7 +32,7 @@ class FurnitureListingAdmin(admin.ModelAdmin):
     )
 
     def get_user(self, obj):
-        return obj.user.username
+        return obj.seller.username
     get_user.short_description = 'User'
 
 @admin.register(ListingImage)
