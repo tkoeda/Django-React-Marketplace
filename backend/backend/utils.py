@@ -1,6 +1,5 @@
 from django.conf import settings
 from rest_framework import serializers
-import logging
 
 def get_s3_url(path):
     if settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto3.S3Boto3Storage':
@@ -14,5 +13,3 @@ class S3ImageField(serializers.ImageField):
         return None
 
 
-def get_logger(name):
-    return logging.getLogger(name)

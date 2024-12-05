@@ -1,0 +1,56 @@
+// Variables.scss
+
+// $max-width: 1200px;
+$mobile-breakpoint: 768px;
+
+// COLORS //
+
+// Background // 
+$color-background-primary: #222;
+$color-background-primary-highlight: #2d2d2d;
+$color-background-secondary: #2d2d2d;
+$color-background-secondary-highlight: #333;
+$color-background-attention: #da3e50;
+$color-background-attention-highlight: #a72030;
+
+
+// Boarder //
+$color-border-attention: #da3e50;
+$color-border-attention-highlight: #a72030; // Added variable
+
+
+// Text //
+$color-text-primary: #e5e5e5;
+$color-text-placeholder: #686868;
+$color-text-inverse: #222;
+$color-text-attention: #da3e50;
+$color-text-attention-highlight: #a72030;
+// Buttons //
+
+
+// Typography //
+$font-size-base: 1rem;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-md: 1rem;
+$font-size-lg: 1.25rem;
+$font-size-xl: 1.5rem;  
+
+// Padding // 
+$base-unit: 8px;
+
+$padding-sizes: (
+  'xs': $base-unit * 0.5,  // 4px
+  's':  $base-unit,        // 8px
+  'm':  $base-unit * 2,    // 16px
+  'l':  $base-unit * 3,    // 24px
+  'xl': $base-unit * 4     // 32px
+);
+
+// Spacing
+$spacing-xs: 8px;
+$spacing-sm: 16px;
+$spacing-md: 24px;

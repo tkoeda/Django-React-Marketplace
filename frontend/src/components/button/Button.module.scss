@@ -1,0 +1,78 @@
+// Button.module.scss
+@use '../../styles/utils/variables' as v;
+
+.button-container {
+    width: 100%;
+
+    button {
+        align-items: center;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        margin: 0;
+        overflow: hidden;
+        text-align: center;
+        text-decoration: none;
+        transition-duration: 0.1s;
+        transition-property: background-color, color, fill;
+        vertical-align: middle;
+        white-space: nowrap;
+        width: 100%;
+        word-break: break-word;
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    }
+}
+
+// Type styles
+.primary {
+    button {
+        background-color: var(--color-background-attention);
+        color: var(--color-text-inverse);
+
+        &:hover:not(:disabled) {
+            background-color: var(--color-background-attention-highlight);
+        }
+    }
+}
+
+.secondary {
+    button {
+        background-color: transparent;
+        border-color: var(--color-border-attention);
+        color: var(--color-text-attention);
+
+        &:hover:not(:disabled) {
+            color: var(--color-text-attention-highlight);
+            border-color: var(--color-border-attention-highlight);
+        }
+    }
+}
+
+// Size styles
+.small {
+    button {
+        font-size: v.$font-size-sm;
+        padding: v.$spacing-xs v.$spacing-sm;
+    }
+}
+
+.medium {
+    button {
+        font-size: v.$font-size-md;
+        padding: v.$spacing-sm v.$spacing-md;
+    }
+}
+
+.large {
+    button {
+        font-size: v.$font-size-lg;
+        padding: 12px 24px;
+    }
+}

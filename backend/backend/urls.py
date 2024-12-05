@@ -7,6 +7,7 @@ from listings.views import (
     MyPageListingsView,
     ListingDetailView,
     ListingViewSet,
+    PurchasedListingsView,
 )
 from rest_framework_simplejwt.views import TokenRefreshView
 from authentication.views import MyTokenObtainPairView
@@ -25,6 +26,8 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api/homepage/", HomePageListingsView.as_view(), name="homepage"),
     path("api/listings/details/<str:listing_id>/", ListingDetailView.as_view(), name="listing-details"),
+    
     # My Page URLs
     path("api/mylistings/<str:status>/", MyPageListingsView.as_view(), name="my-listings"),
+    path('api/purchases/', PurchasedListingsView.as_view(), name='purchased-listings'),
 ]

@@ -1,0 +1,51 @@
+@use '../utils/variables' as v;
+@use '../utils/mixins';
+
+:root {
+  /* Breakpoints */
+  --mobile-breakpoint: 768px;
+
+  /* Colors */
+  /* Background */
+  --color-background-primary: #{v.$color-background-primary};
+  --color-background-primary-highlight: #{v.$color-background-primary-highlight};
+  --color-background-secondary: #{v.$color-background-secondary};
+  --color-background-secondary-highlight: #{v.$color-background-secondary-highlight};
+  --color-background-attention: #{v.$color-background-attention};
+  --color-background-attention-highlight: #{v.$color-background-attention-highlight};
+
+  --color-border-attention: #{v.$color-border-attention};
+  --color-border-attention-highlight: #{v.$color-border-attention-highlight};
+
+  --color-text-primary: #{v.$color-text-primary};
+  --color-text-placeholder: #{v.$color-text-placeholder};
+  --color-text-inverse: #{v.$color-text-inverse};
+  --color-text-attention: #{v.$color-text-attention};
+  --color-text-attention-highlight: #{v.$color-text-attention-highlight};
+
+  /* Typography */
+  --font-size-base: 1rem;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #222;
+  color: #e5e5e5;
+  margin: 0;
+  padding: 0;
+}
+
+
+

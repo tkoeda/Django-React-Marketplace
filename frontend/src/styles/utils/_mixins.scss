@@ -1,0 +1,10 @@
+// _mixins.scss
+@use 'variables' as v; 
+
+@mixin padding($size) {
+  @if map-has-key(v.$padding-sizes, $size) {
+    padding: map-get(v.$padding-sizes, $size);
+  } @else {
+    @error "Invalid padding size: #{$size}.";
+  }
+}
