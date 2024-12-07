@@ -9,13 +9,19 @@
   --color-background-secondary-highlight: #333;
   --color-background-attention: #da3e50;
   --color-background-attention-highlight: #a72030;
+  /* Border */
+  --color-border-primary: #444;
   --color-border-attention: #da3e50;
   --color-border-attention-highlight: #a72030;
+  /* Text */
   --color-text-primary: #e5e5e5;
   --color-text-placeholder: #686868;
   --color-text-inverse: #222;
   --color-text-attention: #da3e50;
   --color-text-attention-highlight: #a72030;
+  /* Icon */
+  --color-icon-attention: #da3e50;
+  --color-icon-attention-highlight: #a72030;
   /* Typography */
   --font-size-base: 1rem;
   --font-weight-normal: 400;

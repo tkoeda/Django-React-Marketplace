@@ -1,6 +1,6 @@
-import AuthForm from "../../components/authform/authform"
+import AuthForm from "../../components/authform/authform";
 function Login() {
-    return <AuthForm route="/api/token/" method="login" /> 
+    return <AuthForm route="/api/token/" method="login" />;
 }
 
-export default Login
+export default Login;

@@ -1,88 +1,29 @@
-// src/components/navbar/Navbar.tsx
-import { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from '../../context/AuthContext';
-import { Menu, X, LogOut, User } from 'lucide-react';
-import './NavBar.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AppShell, Container, useMantineTheme } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import Header from "../header/Header";
+import BottomNavigation from "../bottomnavigation/BottomNavigation";
+import styles from "./Navbar.module.css";
 
-const NavLinks = ({ onLinkClick }: { onLinkClick?: () => void }) => {
-    const { isLoggedIn, logout } = useAuth();
-    const navigate = useNavigate();
+function Navbar({ children }) {
+    const [opened, setOpened] = useState(false);
+    const theme = useMantineTheme();
 
-    const handleLogout = () => {
-        logout();
-        navigate('/login');
-        onLinkClick?.();
-    };
+    const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
     return (
-        <>
-            {isLoggedIn ? (
-                <button onClick={handleLogout} className="nav-button">
-                    <LogOut size={18} />
-                    <span>Logout</span>
-                </button>
-            ) : (
-                <>
-                    <Link to="/login" className="nav-link">
-                        <User size={18} />
-                        <span>Login</span>
-                    </Link>
-                    <Link to="/register" className="nav-link primary">
-                        <span>Register</span>
-                    </Link>
-                </>
-            )}
-        </>
+        <AppShell>
+            <AppShell.Header className={styles.header}>
+                <Header isMobile={isMobile}/>
+            </AppShell.Header>
+
+            <AppShell.Main>
+                <Container size="xl">{children}</Container>
+            </AppShell.Main>
+            { isMobile && <BottomNavigation />}
+        </AppShell>
     );
-};
-
-const Navbar = () => {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-    const toggleMobileMenu = () => {
-        setIsMobileMenuOpen(!isMobileMenuOpen);
-    };
-
-    const closeMobileMenu = () => {
-        setIsMobileMenuOpen(false);
-    };
-
-    return (
-        <header className="navbar">
-            <div className="container">
-                <div className="content">
-                    <div className="nav-start">
-                        <Link to="/" className="logo">
-                            Logo
-                        </Link>
-                    </div>
-
-                    <div className="nav-mid">
-                        {/* Add middle content here */}
-                    </div>
-
-                    <div className="nav-end">
-                        <nav>
-                            <NavLinks />
-                        </nav>
-                        <button 
-                            className="mobile-menu-button"
-                            onClick={toggleMobileMenu}
-                            aria-label="Toggle menu"
-                        >
-                            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-                        </button>
-                    </div>
-                </div>
-
-                {/* Mobile Menu */}
-                <div className={`mobile-menu ${!isMobileMenuOpen ? 'hidden' : ''}`}>
-                    <NavLinks onLinkClick={closeMobileMenu} />
-                </div>
-            </div>
-        </header>
-    );
-};
+}
 
 export default Navbar;

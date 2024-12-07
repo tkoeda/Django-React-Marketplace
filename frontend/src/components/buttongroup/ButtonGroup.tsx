@@ -1,4 +1,3 @@
-// ButtonGroup.tsx
 interface ButtonGroupProps {
     onDraft: (e: React.MouseEvent<HTMLButtonElement>) => void;
     onPublish: (e: React.MouseEvent<HTMLButtonElement>) => void;

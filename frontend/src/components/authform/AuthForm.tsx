@@ -1,30 +1,43 @@
-// src/components/Form.tsx
 import { useState } from "react";
+import { TextInput, PasswordInput, Paper, Title, Container, Button } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
 import * as jwtDecode from "jwt-decode";
-import "./AuthForm.css";
 import { useAuth } from "../../context/AuthContext";
-import Button from "../button/Button";
 
-function AuthForm({ route, method }) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+interface AuthFormProps {
+    route: string;
+    method: 'login' | 'register';
+}
+
+function AuthForm({ route, method }: AuthFormProps) {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { login } = useAuth(); // Add this
-
+    const { login } = useAuth();
+    
     const name = method === "login" ? "Login" : "Register";
 
-    const handleSubmit = async (e) => {
-        setLoading(true);
-        e.preventDefault();
+    const form = useForm({
+        initialValues: {
+            username: '',
+            password: '',
+        },
+        
+        validate: {
+            username: (value) => (value.length < 2 ? 'Username must have at least 2 characters' : null),
+            password: (value) => (value.length < 2 ? 'Password must have at least 6 characters' : null),
+        },
+    });
 
+    const handleSubmit = async (values: { username: string; password: string }) => {
+        setLoading(true);
+        
         try {
-            const res = await api.post(route, { username, password });
+            const res = await api.post(route, values);
             if (method === "login") {
                 const decoded = jwtDecode.jwtDecode(res.data.access);
-                login(res.data.access, res.data.refresh, decoded.user_id); // Use context login
+                login(res.data.access, res.data.refresh, decoded.user_id);
                 navigate("/");
             } else {
                 navigate("/login");
@@ -37,31 +50,40 @@ function AuthForm({ route, method }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="form-container">
-            <h1>{name}</h1>
-            <input
-                className="form-input"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username"
-            />
-            <input
-                className="form-input"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-            />
-                <Button
-                    type="primary"
-                    size="medium"
-                    onClick={handleSubmit} 
-                    disabled={loading} 
-                >
-                    {loading ? "Loading..." : name}
-                </Button>
-        </form>
+        <Container size={420} my={40}>
+            <Title align="center" order={2} mb={30}>
+                {name}
+            </Title>
+
+            <Paper withBorder shadow="md" p={30} radius="md">
+                <form onSubmit={form.onSubmit(handleSubmit)}>
+                    <TextInput
+                        label="Username"
+                        placeholder="Your username"
+                        required
+                        {...form.getInputProps('username')}
+                    />
+
+                    <PasswordInput
+                        label="Password"
+                        placeholder="Your password"
+                        required
+                        mt="md"
+                        {...form.getInputProps('password')}
+                    />
+
+                    <Button
+                        fullWidth
+                        mt="xl"
+                        color="var(--color-background-attention)"
+                        type="submit"
+                        loading={loading}
+                    >
+                        {name}
+                    </Button>
+                </form>
+            </Paper>
+        </Container>
     );
 }
 

@@ -9,6 +9,11 @@ Furniture Marketplace is a full-stack web application that allows users to buy a
 - [x] Image upload and management for listings, using AWS S3 and CloudFront
 - [x] Search and filter functionality for furniture items
 - [x] Responsive design for various devices
+- [ ] Update styling
+- [ ]Implement real-time messaging between buyers and sellers
+- [ ] Add a rating system for users
+- [ ]Integrate a payment gateway for in-app transactions
+- [ ] Ability to favorite/unfavorite listings
 - [ ] Connect a payment service (Stripe)
 
 ## Setup Instructions

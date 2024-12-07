@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from django.core.files.base import ContentFile
 from django.core.validators import MinValueValidator
+from django.core.validators import ValidationError
 from PIL import Image
 import io
 from django.db import transaction
@@ -93,8 +94,9 @@ class ListingManager(models.Manager):
         
         return listing
 
-
-
+def validate_positive_or_none(value):
+        if value is not None and value <= 0:
+            raise ValidationError('Price must be greater than 0')
 
 class FurnitureListing(models.Model):
     class Condition(models.TextChoices):
@@ -123,15 +125,19 @@ class FurnitureListing(models.Model):
         CABINET = "CABINET", "Cabinet"
         WARDROBE = "WARDROBE", "Wardrobe"
         OTHER = "OTHER", "Other"
+    
+    def can_be_published(self):
+        required_fields = [self.title, self.description, self.price, self.category]
+        return all(required_fields) and self.images.exists()
 
     seller = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="FurnitureListings",
     )
-    title = models.CharField(max_length=60)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))],)
+    title = models.CharField(max_length=60, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[validate_positive_or_none], null=True, blank=True)
     category = models.CharField(
         max_length=20, choices=Category.choices, default=Category.OTHER
     )
@@ -139,6 +145,8 @@ class FurnitureListing(models.Model):
         max_length=20,
         choices=Condition.choices,
         default=Condition.GOOD,
+        null=True,
+        blank=True
     )
     status = models.CharField(
         max_length=20,
@@ -148,7 +156,7 @@ class FurnitureListing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     public_comments = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, through="Comment", related_name="comments"
+        settings.AUTH_USER_MODEL, through="Comment", related_name="comments", blank=True
     )
 
     def __str__(self):

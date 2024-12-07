@@ -1,8 +1,23 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { notifications } from '@mantine/notifications';
+import {
+    Container,
+    Paper,
+    Title,
+    Text,
+    Group,
+    Stack,
+    Button,
+    Badge,
+    Loader,
+    Center,
+    Card,
+    Grid,
+} from "@mantine/core";
+import { Carousel } from '@mantine/carousel';
+import { IconEdit, IconEyeOff } from "@tabler/icons-react";
 import api from "../../api";
-import Slider from "react-slick";
-import "./ListingDetailPage.css";
 import PurchaseButton from "../../components/purchasebutton/PurchaseButton";
 
 function ListingDetailPage() {
@@ -25,110 +40,157 @@ function ListingDetailPage() {
             setListing(response.data);
         } catch (error) {
             console.error("Error fetching listing:", error);
+            notifications.show({
+                title: 'Error',
+                message: 'Failed to load listing details',
+                color: 'red',
+            });
         } finally {
             setIsLoading(false);
         }
     };
 
-    const handleSubmit = async (e, action) => {
-        e.preventDefault();
+    const handleSubmit = async (action) => {
         try {
             if (action === "edit") {
-                // Navigate to edit page
                 navigate(`/sell/edit/${listing_id}`);
             } else if (action === "unpublish") {
-                // Send request to unpublish the listing
                 await api.patch(`/api/listings/${listing_id}/`, {
                     status: "draft",
                 });
-                // Refresh the listing data
                 navigate(`/mypage/listings/published`);
-                // Optionally, show a success message
-                alert("Listing unpublished successfully");
+                notifications.show({
+                    title: 'Success',
+                    message: 'Listing unpublished successfully',
+                    color: 'green',
+                });
             }
         } catch (error) {
-            console.error(
-                `Error ${
-                    action === "draft" ? "editing" : "unpublishing"
-                } listing:`,
-                error
-            );
-            // Optionally, show an error message
-            alert(
-                `Error ${
-                    action === "draft" ? "editing" : "unpublishing"
-                } listing. Please try again.`
-            );
+            console.error(`Error ${action === "edit" ? "editing" : "unpublishing"} listing:`, error);
+            notifications.show({
+                title: 'Error',
+                message: `Error ${action === "edit" ? "editing" : "unpublishing"} listing. Please try again.`,
+                color: 'red',
+            });
         }
     };
 
-    const handlePurchaseSuccess = (data) => {
-        navigate("/"); 
+    const handlePurchaseSuccess = () => {
+        navigate("/");
     };
 
     if (isLoading) {
-        return <div>Loading listing...</div>;
+        return (
+            <Center h={400}>
+                <Loader size="lg" />
+            </Center>
+        );
     }
 
     const isOwner = currentUserId === listing.seller?.id?.toString();
 
-    var settings = {
-        dots: true,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    };
-
     return (
-        <div className="listing-detail">
-            <div className="carousel-container">
-                <Slider {...settings}>
-                    {listing.images.map((image, index) => (
-                        <div key={index} className="listing-image">
-                            <img src={image.image_url} alt={listing.title} />
-                        </div>
-                    ))}
-                </Slider>
-            </div>
-            <div className="listing-info">
-                <div className="title-container">
-                    <h1>{listing.title}</h1>
-                </div>
-                <div className="price-container">
-                    <span className="price">${listing.price}</span>
-                </div>
-                <div className="description-container">
-                    <p>{listing.description}</p>
-                </div>
-                <span className="condition">{listing.condition_display}</span>
-            </div>
-            <div className="button-group">
-                {isOwner ? (
-                    <>
-                        <button
-                            type="button"
-                            className="edit-btn"
-                            onClick={(e) => handleSubmit(e, "edit")}
-                        >
-                            Edit Listing
-                        </button>
-                        <button
-                            type="button"
-                            className="unpublish-btn"
-                            onClick={(e) => handleSubmit(e, "unpublish")}
-                        >
-                            Unpublish
-                        </button>
-                    </>
-                ) : (
-                    <PurchaseButton
-                        listingId={listing.id}
-                        onPurchaseSuccess={handlePurchaseSuccess}
-                    />
-                )}
-            </div>
-        </div>
+        <Container size="xl" py="xl">
+            <Card shadow="sm" padding="xl" radius="md" withBorder>
+                <Grid gutter="xl">
+                    {/* Left side - Images */}
+                    <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Paper withBorder radius="md" p="xs">
+                            <Carousel
+                                withIndicators
+                                height={500}
+                                slideSize="100%"
+                                slideGap="md"
+                                loop
+                                align="start"
+                                styles={{
+                                    indicator: {
+                                        width: 12,
+                                        height: 4,
+                                        transition: 'width 250ms ease',
+                                        '&[data-active]': {
+                                            width: 40,
+                                        },
+                                    },
+                                }}
+                            >
+                                {listing.images?.map((image, index) => (
+                                    <Carousel.Slide key={index}>
+                                        <img
+                                            src={image.image_url}
+                                            alt={`${listing.title} - Image ${index + 1}`}
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'contain',
+                                                backgroundColor: '#f8f9fa',
+                                            }}
+                                        />
+                                    </Carousel.Slide>
+                                ))}
+                            </Carousel>
+                        </Paper>
+                    </Grid.Col>
+
+                    {/* Right side - Information */}
+                    <Grid.Col span={{ base: 12, md: 6 }}>
+                        <Stack>
+                            <Group justify="space-between" align="flex-start">
+                                <Stack>
+                                    <Title order={2}>{listing.title}</Title>
+                                    <Badge size="lg">
+                                        {listing.condition_display}
+                                    </Badge>
+                                </Stack>
+                                <Text size="xl" fw={700} style={{ fontSize: '2rem' }}>
+                                    ${listing.price}
+                                </Text>
+                            </Group>
+
+                            <Stack>
+                                <Title order={3}>Description</Title>
+                                <Text size="md" style={{ whiteSpace: 'pre-line' }}>
+                                    {listing.description}
+                                </Text>
+                            </Stack>
+
+                            {/* Action Buttons */}
+                            <Group mt="auto">
+                                {isOwner ? (
+                                    <>
+                                        <Button
+                                            leftSection={<IconEdit size={16} />}
+                                            onClick={() => handleSubmit("edit")}
+                                            variant="filled"
+                                            color="blue"
+                                            size="lg"
+                                            fullWidth
+                                        >
+                                            Edit Listing
+                                        </Button>
+                                        <Button
+                                            leftSection={<IconEyeOff size={16} />}
+                                            onClick={() => handleSubmit("unpublish")}
+                                            variant="light"
+                                            color="red"
+                                            size="lg"
+                                            fullWidth
+                                        >
+                                            Unpublish
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <PurchaseButton
+                                        listingId={listing.id}
+                                        onPurchaseSuccess={handlePurchaseSuccess}
+                                    />
+                                )}
+                            </Group>
+                        </Stack>
+                    </Grid.Col>
+                </Grid>
+            </Card>
+        </Container>
     );
 }
 

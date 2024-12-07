@@ -1,0 +1,25 @@
+.listing-form-container {
+    max-width: 40rem;
+    width: 100%;
+    margin: 0 auto;
+
+    .listing-form-stack {
+        .mantine-Input-input {
+            background-color: var(--color-background-primary);
+            border: 1px solid var(--color-border-primary);
+            color: var(--color-text-primary);
+        }
+    }
+}
+
+.mantine-Select-dropdown {
+    background-color: var(--color-background-primary);
+    border: 1px solid var(--color-border-primary);
+    .mantine-Select-option {
+        color: var(--color-text-primary);
+        &:hover {
+            background: var(--color-background-primary-highlight);
+        }
+    }
+    
+}
