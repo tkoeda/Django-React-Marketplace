@@ -1,72 +1,81 @@
-import { useState, useEffect } from "react";
-import { Routes, Route, NavLink, useNavigate, useLocation } from "react-router-dom";
-import ListingsTab from "../../components/mypage/listingstab/ListingsTab";
-import PurchasesTab from "../../components/mypage/purchasestab/PurchasesTab";
-import "./MyPage.css";
+import { Button, Container, Group, Paper, Stack, Title } from "@mantine/core";
+import { IconLock } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+const LISTING_STATUSES = {
+    PUBLISHED: 'published',
+    IN_PROGRESS: 'in_progress',
+    COMPLETED: 'completed'
+};
 
 const MyPage = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const [activeSection, setActiveSection] = useState("published");
-    
-    useEffect(() => {
-        const path = location.pathname.split('/')[2] || 'published';
-        setActiveSection(path);
-    }, [location]);
-
-    const handleSectionChange = (section) => {
-        setActiveSection(section);
-        navigate(`/mypage/${section}`);
-    };
 
     return (
-        <div className="container">
-            <div className="button-grid">
-                <NavLink 
-                    to="/mypage/liked"
-                    className={({ isActive }) => `grid-button ${isActive ? "active" : ""}`}
-                >
-                    <span className="button-icon">❤️</span>
-                    <span>Liked</span>
-                </NavLink>
-                <NavLink 
-                    to="/mypage/purchases"
-                    className={({ isActive }) => `grid-button ${isActive ? "active" : ""}`}
-                >
-                    <span className="button-icon">🛍️</span>
-                    <span>Bought Items</span>
-                </NavLink>
-                <NavLink 
-                    to="/mypage/listings/published"
-                    className={({ isActive }) => `grid-button ${isActive ? "active" : ""}`}
-                >
-                    <span className="button-icon">📦</span>
-                    <span>My Listings</span>
-                </NavLink>
-            </div>
+        <Container size="xs">
+            <Paper shadow="xs" p="md">
+                <Stack>
+                    <Group justify="space-between">
+                        <Title order={2}>My Page</Title>
+                        <Button
+                            variant="light"
+                            leftSection={<IconLock size={16} />}
+                            onClick={() => navigate("/mypage/password")}
+                        >
+                            Change Password
+                        </Button>
+                    </Group>
 
-            <Routes>
-                <Route path="listings/*" element={
-                    <div className="section-content">
-                        <h2 className="section-title">My Listings</h2>
-                        <ListingsTab />
-                    </div>
-                } />
-                <Route path="liked" element={
-                    <div className="section-content">
-                        <h2 className="section-title">Liked Items</h2>
-                        <p>Liked items will be displayed here.</p>
-                    </div>
-                } />
-                <Route path="purchases/*" element={
-                    <div className="section-content">
-                        <h2 className="section-title">Purchased Items</h2>
-                        <PurchasesTab />
-                    </div>
-                } />
-            </Routes>
-        </div>
+                    <Stack>
+                        <Title order={3}>My Listings</Title>
+                        <Stack>
+                            <Button
+                                variant="filled"
+                                onClick={() => navigate(`/mypage/listings/${LISTING_STATUSES.PUBLISHED}`)}
+                                fullWidth
+                            >
+                                Published Listings
+                            </Button>
+                            <Button
+                                variant="filled"
+                                onClick={() => navigate(`/mypage/listings/${LISTING_STATUSES.IN_PROGRESS}`)}
+                                fullWidth
+                            >
+                                In Progress Listings
+                            </Button>
+                            <Button
+                                variant="filled"
+                                onClick={() => navigate(`/mypage/listings/${LISTING_STATUSES.COMPLETED}`)}
+                                fullWidth
+                            >
+                                Completed Listings
+                            </Button>
+                        </Stack>
+                    </Stack>
+
+                    <Stack>
+                        <Title order={3}>Other</Title>
+                        <Stack>
+                            <Button
+                                variant="light"
+                                onClick={() => navigate("/mypage/liked")}
+                                fullWidth
+                            >
+                                Liked Items
+                            </Button>
+                            <Button
+                                variant="light"
+                                onClick={() => navigate("/mypage/purchases")}
+                                fullWidth
+                            >
+                                My Purchases
+                            </Button>
+                        </Stack>
+                    </Stack>
+                </Stack>
+            </Paper>
+        </Container>
     );
 };
-
 export default MyPage;

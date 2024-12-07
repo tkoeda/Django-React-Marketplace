@@ -101,14 +101,26 @@ class ListingDetailSerializer(serializers.ModelSerializer):
             "seller",
         ]
 
+    def validate(self, data):
+        print("here")
+        if data.get("status") == "published":
+            required_fields = ["title", "price", "category", "condition"]
+            missing_fields = [field for field in required_fields if not data.get(field)]
+
+            if missing_fields:
+                raise serializers.ValidationError(
+                    f"For published listings, these fields are required: {', '.join(missing_fields)}"
+                )
+        return data
+
     def create(self, validated_data):
         request = self.context.get("request")
         image_updates = json.loads(request.data.get("image_updates", "[]"))
-        
+
         listing = FurnitureListing.objects.create_listing_with_images(
             validated_data, image_updates, request.FILES
         )
-        
+
         return listing
 
     @transaction.atomic
@@ -120,11 +132,10 @@ class ListingDetailSerializer(serializers.ModelSerializer):
             return instance.update_with_images(
                 validated_data, image_updates, request.FILES
             )
-        
+
         logger.info("updating instance without images")
         # Update the instance fields without processing images
         return super().update(instance, validated_data)
-
 
 
 class CommentSerializer(serializers.ModelSerializer):

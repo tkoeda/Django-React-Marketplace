@@ -1,4 +1,3 @@
-// Button.module.scss
 @use '../../styles/utils/variables' as v;
 
 .button-container {
@@ -30,7 +29,6 @@
     }
 }
 
-// Type styles
 .primary {
     button {
         background-color: var(--color-background-attention);
@@ -55,7 +53,6 @@
     }
 }
 
-// Size styles
 .small {
     button {
         font-size: v.$font-size-sm;

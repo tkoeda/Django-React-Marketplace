@@ -1,0 +1,20 @@
+.logo {
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: var(--font-weight-bold);
+}
+
+.link {
+    display: block;
+    line-height: 1;
+    padding: 8px 12px;
+    border-radius: var(--mantine-radius-sm);
+    text-decoration: none;
+    color: light-dark(var(--mantine-color-gray-7), var(--color-text-primary));
+    font-size: var(--mantine-font-size-sm);
+    font-weight: 500;
+
+    &:hover {
+        background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+    }
+}

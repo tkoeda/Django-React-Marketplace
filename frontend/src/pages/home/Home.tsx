@@ -3,8 +3,8 @@ import {
     LoadingSpinner,
     LoadingOverlay,
 } from "../../components/loadingcomponent/LoadingComponent";
-import { Link } from 'react-router-dom';
-
+import { Link } from "react-router-dom";
+import { Container } from "@mantine/core";
 import api from "../../api";
 import "./Home.css";
 
@@ -30,7 +30,7 @@ function Home() {
         try {
             const response = await api.get(`/api/homepage/`);
             setListings(response.data.results);
-            console.log(response.data.results)
+            console.log(response.data.results);
         } catch (error) {
             console.error("Error fetching listings:", error);
             setError(
@@ -47,7 +47,7 @@ function Home() {
 
     return (
         <LoadingOverlay isLoading={loading}>
-            <div className="container">
+            <Container className="container">
                 <h1>Furniture Listings</h1>
                 {listings.length > 0 ? (
                     <ul className="listings-list">
@@ -77,7 +77,7 @@ function Home() {
                 ) : (
                     <p className="no-listings">No listings found.</p>
                 )}
-            </div>
+            </Container>
         </LoadingOverlay>
     );
 }

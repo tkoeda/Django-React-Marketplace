@@ -1,0 +1,17 @@
+.header {
+    height: 64px;
+    background-color: var(--mantine-color-body);
+    border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    padding-left: var(--mantine-spacing-md);
+    padding-right: var(--mantine-spacing-md);
+    margin-bottom: 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .logo {
+        font-size: 5rem;
+        text-decoration: none;
+        font-weight: var(--font-weight-bold);
+    }
+}

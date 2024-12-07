@@ -14,14 +14,21 @@
   --color-background-attention: #{v.$color-background-attention};
   --color-background-attention-highlight: #{v.$color-background-attention-highlight};
 
+  /* Border */
+  --color-border-primary: #{v.$color-border-primary};
   --color-border-attention: #{v.$color-border-attention};
   --color-border-attention-highlight: #{v.$color-border-attention-highlight};
 
+  /* Text */
   --color-text-primary: #{v.$color-text-primary};
   --color-text-placeholder: #{v.$color-text-placeholder};
   --color-text-inverse: #{v.$color-text-inverse};
   --color-text-attention: #{v.$color-text-attention};
   --color-text-attention-highlight: #{v.$color-text-attention-highlight};
+
+  /* Icon */
+  --color-icon-attention: #{v.$color-icon-attention};
+  --color-icon-attention-highlight: #{v.$color-icon-attention-highlight};
 
   /* Typography */
   --font-size-base: 1rem;
