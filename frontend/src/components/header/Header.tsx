@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Group, Burger, UnstyledButton, Button, Box } from "@mantine/core";
+import { Group, ActionIcon, UnstyledButton, Button } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
     IconLogout,
@@ -20,7 +20,7 @@ interface HeaderProps {
 interface NavButtonProps {
     to?: string;
     onClick?: () => void;
-    label: string;
+    label?: string;
     icon?: React.ReactNode;
     variant?: string;
 }
@@ -41,43 +41,65 @@ function Header({ isMobile }: HeaderProps) {
         label,
         icon,
         variant = "ghost",
-    }) =>
-        onClick ? (
-            <Button onClick={onClick} variant={variant} leftSection={icon}>
-                {label}
-            </Button>
-        ) : (
+    }) => {
+        if (!label) {
+            // Use ActionIcon for icon-only buttons
+            if (onClick) {
+                return (
+                    <ActionIcon onClick={onClick} variant={variant} size="lg">
+                        {icon}
+                    </ActionIcon>
+                );
+            }
+            return (
+                <ActionIcon
+                    component={Link}
+                    to={to!}
+                    variant={variant}
+                    size="lg"
+                >
+                    {icon}
+                </ActionIcon>
+            );
+        }
+
+        // Use regular Button when there's a label
+        if (onClick) {
+            return (
+                <Button onClick={onClick} variant={variant} leftSection={icon}>
+                    {label}
+                </Button>
+            );
+        }
+
+        return (
             <Button
                 component={Link}
-                to={to!} // Non-null assertion since we know it exists when onClick doesn't
+                to={to!}
                 variant={variant}
                 leftSection={icon}
             >
                 {label}
             </Button>
         );
-        
-        const navItems = isLoggedIn ? (
+    };
+
+    const navItems = isLoggedIn ? (
         <>
             {!isMobile && (
                 <>
-                    <NavButton 
-                        to="/profile"
-                        label="Profile"
-                        icon={<IconUser className="w-4 h-4" />}
-                    />
-                    <NavButton 
+                    <NavButton to="/mypage" icon={<IconUser />} />
+                    <NavButton
                         to="/sell"
                         label="Sell"
-                        icon={<IconPlus className="w-4 h-4" />}
                         variant="default"
                     />
                 </>
             )}
-            <NavButton 
+            <NavButton
                 onClick={handleLogout}
                 label="Logout"
-                icon={<IconLogout className="w-4 h-4" />}
+                icon={<IconLogout />}
             />
         </>
     ) : (
@@ -86,7 +108,6 @@ function Header({ isMobile }: HeaderProps) {
             <NavButton to="/register" label="Register" variant="default" />
         </>
     );
-  
 
     return (
         <>

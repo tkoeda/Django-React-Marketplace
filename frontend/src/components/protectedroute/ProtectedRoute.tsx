@@ -22,7 +22,7 @@ function ProtectedRoute({ children }) {
             const res = await api.post("/api/token/refresh/", {
                 refresh: refreshToken,
             });
-            if (res.status === 200) {
+            if (res.status === 200 && res.data.access) {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 setIsAuthorized(true);
             } else {
@@ -35,19 +35,29 @@ function ProtectedRoute({ children }) {
     };
 
     const auth = async () => {
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if (token) {
+        try {
+            const token = localStorage.getItem(ACCESS_TOKEN);
+            if (!token) {
+                return await refreshToken();
+            }
+
             const decoded = jwtDecode(token);
+            if (!decoded) {
+                return await refreshToken();
+            }
+
             const tokenExpiration = decoded.exp;
             const now = Date.now() / 1000;
 
             if (tokenExpiration < now) {
-                await refreshToken();
-            } else {
-                setIsAuthorized(true);
+                return await refreshToken();
             }
-        } else {
-            setIsAuthorized(false);
+
+            setIsAuthorized(true);
+            return true;
+        } catch (error) {
+            console.error('Auth error:', error);
+            return await refreshToken();
         }
     };
 

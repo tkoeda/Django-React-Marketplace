@@ -12,12 +12,14 @@ const api = axios.create({
 const refreshToken = async () => {
     try {
         const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-        const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}/api/token/refresh/`,
-            {
-                refresh: refreshToken,
-            }
+        if (!refreshToken) {
+            throw new Error('No refresh token found');
+        }
+        const response = await api.post(
+            '/api/token/refresh/', // Remove baseURL since api instance already has it
+            { refresh: refreshToken }
         );
+
         const { access } = response.data;
         localStorage.setItem(ACCESS_TOKEN, access);
         return access;
