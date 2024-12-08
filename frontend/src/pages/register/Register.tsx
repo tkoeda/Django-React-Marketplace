@@ -1,4 +1,4 @@
-import AuthForm from "../../components/authform/authform";
+import AuthForm from "../../components/authform/AuthForm";
 function Register() {
     return <AuthForm route="/api/user/register/" method="register" />;
 }
