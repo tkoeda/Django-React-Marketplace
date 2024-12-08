@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import FurnitureListing, ListingImage, Purchase
 from .serializers import ListingListSerializer, ListingDetailSerializer
-from backend.permissions import IsOwnerOrReadOnly
+from core.permissions import IsOwnerOrReadOnly
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import APIException
 from django.db import transaction

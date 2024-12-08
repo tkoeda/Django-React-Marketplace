@@ -113,7 +113,7 @@ Furniture Marketplace is a full-stack web application that allows users to buy a
 furniture-marketplace/
 │
 ├── backend/
-│   ├── backend/  # Main Django app
+│   ├── core/  # Main Django app
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   ├── utils.py  # S3 and CloudFront integrations
