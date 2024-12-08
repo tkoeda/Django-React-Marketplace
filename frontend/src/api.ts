@@ -2,8 +2,11 @@ import axios from "axios";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
 // Axios Interceptor
 
+const isDevelopment = import.meta.env.MODE === "development";
+const myBaseUrl = isDevelopment ? import.meta.env.VITE_API_URL_LOCAL : import.meta.env.VITE_API_URL_DEPLOY;
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: myBaseUrl,
 });
 
 const refreshToken = async () => {
