@@ -44,7 +44,7 @@ Furniture Marketplace is a full-stack web application that allows users to buy a
 
 3. Create a `.env` file in the root directory and add the following configuration:
    ```env
-   VITE_API_URL=http://127.0.0.1:8000 
+   VITE_API_URL_LOCAL=http://127.0.0.1:8000 
 
    # S3 Configuration
    USE_S3=True
