@@ -111,7 +111,6 @@ function App() {
                                     </ProtectedRoute>
                                 }
                             />
-                            # Listing
                             <Route
                                 path="/mylistings/:listing_id"
                                 element={
