@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { Box, Text, CloseButton, Stack, rem, Button } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { Camera } from "lucide-react";
+import { IconCamera } from "@tabler/icons-react";
 import styles from "./ImageUploader.module.css";
 
 interface Image {
@@ -79,7 +79,7 @@ function ImageUploader({
                 >
                     <Stack className={styles.stack}>
                         <Button variant="transparent" className={styles.selectButton} > 
-                            <Camera className={styles.icon} />
+                            <IconCamera className={styles.icon} />
                             <Text size="md" inline className={styles.selectText}>
                                 Select Images
                             </Text>

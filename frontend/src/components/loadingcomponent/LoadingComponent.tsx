@@ -1,7 +1,7 @@
-import { Loader } from "lucide-react";
+import { IconLoader } from "@tabler/icons-react";
 
 const LoadingSpinner = ({ size = 24, color = "currentColor" }) => (
-    <Loader size={size} color={color} className="animate-spin" />
+    <IconLoader size={size} color={color} className="animate-spin" />
 );
 
 const LoadingOverlay = ({ isLoading, children }) => {
