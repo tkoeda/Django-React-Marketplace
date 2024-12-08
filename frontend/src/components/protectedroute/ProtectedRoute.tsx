@@ -13,6 +13,10 @@ function ProtectedRoute({ children }) {
 
     const refreshToken = async () => {
         const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+        if (!refreshToken) {
+            setIsAuthorized(false);
+            return;
+        }
 
         try {
             const res = await api.post("/api/token/refresh/", {
@@ -32,18 +36,18 @@ function ProtectedRoute({ children }) {
 
     const auth = async () => {
         const token = localStorage.getItem(ACCESS_TOKEN);
-        if (!token) {
-            setIsAuthorized(false);
-            return;
-        }
-        const decoded = jwtDecode(token);
-        const tokenExpiration = decoded.exp;
-        const now = Date.now() / 1000;
+        if (token) {
+            const decoded = jwtDecode(token);
+            const tokenExpiration = decoded.exp;
+            const now = Date.now() / 1000;
 
-        if (tokenExpiration < now) {
-            await refreshToken();
+            if (tokenExpiration < now) {
+                await refreshToken();
+            } else {
+                setIsAuthorized(true);
+            }
         } else {
-            setIsAuthorized(true);
+            setIsAuthorized(false);
         }
     };
 
