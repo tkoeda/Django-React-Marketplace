@@ -35,31 +35,25 @@ function ProtectedRoute({ children }) {
     };
 
     const auth = async () => {
-        try {
-            const token = localStorage.getItem(ACCESS_TOKEN);
-            if (!token) {
-                return await refreshToken();
-            }
+        const token = localStorage.getItem(ACCESS_TOKEN);
+        if (!token) {
+            setIsAuthorized(false);
+            return;
+        }
+        const decoded = jwtDecode(token);
+        const tokenExpiration = decoded.exp;
+        const now = Date.now() / 1000;
 
-            const decoded = jwtDecode(token);
-            if (!decoded) {
-                return await refreshToken();
-            }
-
-            const tokenExpiration = decoded.exp;
-            const now = Date.now() / 1000;
-
-            if (tokenExpiration < now) {
-                return await refreshToken();
-            }
-
+        if (tokenExpiration < now) {
+            await refreshToken();
+        } else {
             setIsAuthorized(true);
-            return true;
-        } catch (error) {
-            console.error('Auth error:', error);
-            return await refreshToken();
         }
     };
+
+    if (isAuthorized === null) {
+        return <div>Loading...</div>;
+    }
 
     if (isAuthorized === null) {
         return <div>Loading...</div>;
