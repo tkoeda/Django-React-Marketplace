@@ -7,7 +7,14 @@ class User(AbstractUser):
     """
     number_of_active_listings = models.PositiveIntegerField(default=0)
     number_of_sold_listings = models.PositiveIntegerField(default=0)
-    # Add any additional fields here
+
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        error_messages={
+            'unique': "This username is already taken."  
+        }
+    )
 
     def __str__(self):
         return self.username
