@@ -39,7 +39,9 @@ function Home() {
         } catch (error) {
             console.error("Error fetching listings:", error);
             setError(
-                "An error occurred while fetching listings. Please try again later."
+                new Error(
+                    "An error occurred while fetching listings. Please try again later."
+                )
             );
         } finally {
             setLoading(false);
@@ -81,7 +83,9 @@ function Home() {
                                     radius="md"
                                     className={styles["card"]}
                                 >
-                                    <Card.Section className={styles["card-section-image"]}>
+                                    <Card.Section
+                                        className={styles["card-section-image"]}
+                                    >
                                         <Image
                                             src={listing.thumbnail}
                                             height="100%"
@@ -91,8 +95,14 @@ function Home() {
                                             fit="contain"
                                         />
                                     </Card.Section>
-                                    <Card.Section className={styles["card-section-text"]}> 
-                                        <Text fw={500} size="lg" className={styles["title-text"]}>
+                                    <Card.Section
+                                        className={styles["card-section-text"]}
+                                    >
+                                        <Text
+                                            fw={500}
+                                            size="lg"
+                                            className={styles["title-text"]}
+                                        >
                                             {listing.title}
                                         </Text>
                                         <Text
