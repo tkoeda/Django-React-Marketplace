@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Group, ActionIcon, UnstyledButton, Button } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
     IconLogout,
     IconUser,
@@ -26,13 +25,19 @@ interface NavButtonProps {
 }
 
 function Header({ isMobile }: HeaderProps) {
-    const [opened, { toggle }] = useDisclosure(false);
     const { isLoggedIn, logout } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
-        navigate("/login");
+    };
+
+    const handleSellClick = () => {
+        if (!isLoggedIn) {
+            navigate("/login", { state: { from: "/sell" } });
+        } else {
+            navigate("/sell");
+        }
     };
 
     const NavButton: React.FC<NavButtonProps> = ({
@@ -43,7 +48,6 @@ function Header({ isMobile }: HeaderProps) {
         variant = "ghost",
     }) => {
         if (!label) {
-            // Use ActionIcon for icon-only buttons
             if (onClick) {
                 return (
                     <ActionIcon onClick={onClick} variant={variant} size="lg">
@@ -63,7 +67,6 @@ function Header({ isMobile }: HeaderProps) {
             );
         }
 
-        // Use regular Button when there's a label
         if (onClick) {
             return (
                 <Button onClick={onClick} variant={variant} leftSection={icon}>
@@ -84,28 +87,30 @@ function Header({ isMobile }: HeaderProps) {
         );
     };
 
-    const navItems = isLoggedIn ? (
+    const navItems = (
         <>
+            {isLoggedIn ? (
+                <NavButton
+                    onClick={handleLogout}
+                    label="Logout"
+                    icon={<IconLogout />}
+                />
+            ) : (
+                <>
+                    <NavButton to="/login" label="Login" />
+                    <NavButton to="/register" label="Register" variant="default" />
+                </>
+            )}
             {!isMobile && (
                 <>
-                    <NavButton to="/mypage" icon={<IconUser />} />
+                    {isLoggedIn && <NavButton to="/mypage" icon={<IconUser />} />}
                     <NavButton
-                        to="/sell"
+                        onClick={handleSellClick}
                         label="Sell"
                         variant="default"
                     />
                 </>
             )}
-            <NavButton
-                onClick={handleLogout}
-                label="Logout"
-                icon={<IconLogout />}
-            />
-        </>
-    ) : (
-        <>
-            <NavButton to="/login" label="Login" />
-            <NavButton to="/register" label="Register" variant="default" />
         </>
     );
 

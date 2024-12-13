@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { AppShell, Container, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import Header from "../header/Header";
@@ -10,7 +9,7 @@ function Navbar({ children }) {
     const [opened, setOpened] = useState(false);
     const theme = useMantineTheme();
 
-    const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+    const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
     return (
         <AppShell>

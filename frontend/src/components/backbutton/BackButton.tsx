@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { IconChevronLeft } from "@tabler/icons-react";
 
 import styles from "./BackButton.module.css";
@@ -36,12 +36,13 @@ function BackButton() {
     }
 
     return (
-        <Button
+        <ActionIcon
             variant="subtle"
-            leftSection={<IconChevronLeft size={18} />}
             onClick={() => navigate(-1)}
             className={styles.backButton}
-        ></Button>
+        >
+            <IconChevronLeft size={18} />
+        </ActionIcon>
     );
 }
 

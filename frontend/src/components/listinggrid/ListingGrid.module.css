@@ -1,0 +1,8 @@
+.listing-grid .card {
+  background-color: var(--color-background-primary);
+  border-bottom: 1px solid var(--color-border-primary);
+  border-radius: 0px;
+}
+.listing-grid .card:first-child {
+  border-top: 1px solid var(--color-border-primary);
+}/*# sourceMappingURL=ListingGrid.module.css.map */

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const LISTING_STATUSES = {
+    DRAFT: 'draft',
     PUBLISHED: 'published',
     IN_PROGRESS: 'in_progress',
     COMPLETED: 'completed'
@@ -32,21 +33,28 @@ const MyPage = () => {
                         <Stack>
                             <Button
                                 variant="filled"
-                                onClick={() => navigate(`/mypage/listings/${LISTING_STATUSES.PUBLISHED}`)}
+                                onClick={() => navigate(`/mypage/${LISTING_STATUSES.DRAFT}`)}
+                                fullWidth
+                            >
+                                Draft Listings
+                            </Button>
+                            <Button
+                                variant="filled"
+                                onClick={() => navigate(`/mypage/${LISTING_STATUSES.PUBLISHED}`)}
                                 fullWidth
                             >
                                 Published Listings
                             </Button>
                             <Button
                                 variant="filled"
-                                onClick={() => navigate(`/mypage/listings/${LISTING_STATUSES.IN_PROGRESS}`)}
+                                onClick={() => navigate(`/mypage/${LISTING_STATUSES.IN_PROGRESS}`)}
                                 fullWidth
                             >
                                 In Progress Listings
                             </Button>
                             <Button
                                 variant="filled"
-                                onClick={() => navigate(`/mypage/listings/${LISTING_STATUSES.COMPLETED}`)}
+                                onClick={() => navigate(`/mypage/${LISTING_STATUSES.COMPLETED}`)}
                                 fullWidth
                             >
                                 Completed Listings

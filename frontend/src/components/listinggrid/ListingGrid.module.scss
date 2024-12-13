@@ -1,0 +1,11 @@
+.listing-grid {
+    .card {
+        background-color: var(--color-background-primary);
+        border-bottom: 1px solid var(--color-border-primary);
+        border-radius: 0px;
+
+        &:first-child {
+            border-top: 1px solid var(--color-border-primary);
+        }
+    }
+}

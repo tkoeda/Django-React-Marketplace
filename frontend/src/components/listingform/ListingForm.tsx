@@ -92,7 +92,6 @@ function ListingForm(): JSX.Element {
                         `/api/listings/${listing_id}/`
                     );
                     form.setValues({
-                        // Add this
                         title: response.data.title,
                         description: response.data.description,
                         price: response.data.price,
@@ -199,7 +198,7 @@ function ListingForm(): JSX.Element {
                 await api.patch(`/api/listings/${listing_id}/`, formData, {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
-                navigate("/sell/drafts");
+                navigate("/sell/draft");
             } else {
                 await api.post("/api/listings/", formData, {
                     headers: { "Content-Type": "multipart/form-data" },
@@ -241,12 +240,13 @@ function ListingForm(): JSX.Element {
 
                 <NumberInput
                     label="Price"
-                    placeholder="Enter price"
+                    placeholder="0"
                     {...form.getInputProps("price")}
                     min={0}
                     decimalScale={2}
                     hideControls
                     required
+                    leftSection="$"
                 />
 
                 <Select
@@ -265,7 +265,7 @@ function ListingForm(): JSX.Element {
                     required
                 />
 
-                <Group justify="center" mt="xl">
+                <Stack mt="xl">
                     <Button
                         variant="outline"
                         color="var(--color-border-attention)"
@@ -290,7 +290,7 @@ function ListingForm(): JSX.Element {
                             Delete
                         </Button>
                     )}
-                </Group>
+                </Stack>
             </Stack>
         </Container>
     );

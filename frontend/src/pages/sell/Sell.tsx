@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import './Sell.css';
 
 const Sell = () => {
@@ -9,7 +9,7 @@ const Sell = () => {
         <Link to="/sell/create" className="button create-listing">
           Create New Listing
         </Link>
-        <Link to="/sell/drafts" className="button view-drafts">
+        <Link to="/sell/draft" className="button view-drafts">
           View Draft Listings
         </Link>
       </div>

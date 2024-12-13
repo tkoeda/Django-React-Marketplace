@@ -1,20 +1,41 @@
 import { IconLoader } from "@tabler/icons-react";
+import { Box } from "@mantine/core";
 
 const LoadingSpinner = ({ size = 24, color = "currentColor" }) => (
-    <IconLoader size={size} color={color} className="animate-spin" />
+  <Box
+    component={IconLoader}
+    size={size}
+    color={color}
+    style={{ animation: "spin 1s linear infinite" }}
+  />
 );
 
 const LoadingOverlay = ({ isLoading, children }) => {
-    if (!isLoading) return children;
+  if (!isLoading) return children;
 
-    return (
-        <div className="relative">
-            <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
-                <LoadingSpinner size={48} />
-            </div>
-            <div className="opacity-50 pointer-events-none">{children}</div>
-        </div>
-    );
+  return (
+    <Box pos="relative">
+      <Box
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "rgba(255, 255, 255, 0.8)",
+          zIndex: 1000,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <LoadingSpinner size={48} />
+      </Box>
+      <Box style={{ opacity: isLoading ? 0.6 : 1 }}>
+        {children}
+      </Box>
+    </Box>
+  );
 };
 
 export { LoadingSpinner, LoadingOverlay };

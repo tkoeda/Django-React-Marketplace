@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
     TextInput,
     PasswordInput,
@@ -11,7 +12,6 @@ import {
 import { useForm } from "@mantine/form";
 import { IconAlertCircle } from "@tabler/icons-react";
 import api from "../../api";
-import { useNavigate } from "react-router-dom";
 import * as jwtDecode from "jwt-decode";
 import { useAuth } from "../../context/AuthContext";
 
@@ -23,8 +23,9 @@ interface AuthFormProps {
 function AuthForm({ route, method }: AuthFormProps) {
     const [loading, setLoading] = useState(false);
     const [globalError, setGlobalError] = useState<string | null>(null);
-    const navigate = useNavigate();
     const { login } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const name = method === "login" ? "Login" : "Register";
 
@@ -60,7 +61,8 @@ function AuthForm({ route, method }: AuthFormProps) {
             if (method === "login") {
                 const decoded = jwtDecode.jwtDecode(res.data.access);
                 login(res.data.access, res.data.refresh, decoded.user_id);
-                navigate("/");
+                const from = location.state?.from || "/";
+                navigate(from);
             } else {
                 navigate("/login");
             }

@@ -20,7 +20,6 @@ import ProtectedRoute from "./components/protectedroute/ProtectedRoute";
 import MyPage from "./pages/mypage/MyPage";
 import ListingForm from "./components/listingform/ListingForm";
 import Sell from "./pages/sell/Sell";
-import TabBar from "./components/tabbar/TabBar";
 import ListingDetailPage from "./pages/listing/ListingDetailPage";
 import DraftListings from "./pages/draftlistings/DraftListings";
 import Header from "./components/header/Header";
@@ -38,16 +37,6 @@ function RegisterAndLogout() {
     return <Register />;
 }
 
-function ConditionalTabBar() {
-    const location = useLocation();
-    const showTabBarPaths = ["/", "/mypage", "/sell"];
-
-    return showTabBarPaths.some((path) =>
-        location.pathname.startsWith(path)
-    ) ? (
-        <TabBar />
-    ) : null;
-}
 
 function App() {
     return (
@@ -79,7 +68,7 @@ function App() {
                                 }
                             />
                             <Route
-                                path="/mypage/listings/:status"
+                                path="/mypage/:status"
                                 element={
                                     <ProtectedRoute>
                                         <ListingsPage />
@@ -96,10 +85,10 @@ function App() {
                                 }
                             />
                             <Route
-                                path="/sell/drafts"
+                                path="/sell/draft"
                                 element={
                                     <ProtectedRoute>
-                                        <DraftListings />
+                                        <ListingsPage />
                                     </ProtectedRoute>
                                 }
                             />
