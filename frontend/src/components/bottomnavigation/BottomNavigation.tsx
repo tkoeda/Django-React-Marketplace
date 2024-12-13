@@ -1,6 +1,7 @@
 import { AppShell, Group, Stack, Text } from '@mantine/core';
 import { IconHome, IconPlus, IconUser } from '@tabler/icons-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
+import styles from './BottomNavigation.module.css';
 
 function BottomNavigation(): JSX.Element {
   const location = useLocation();
@@ -26,7 +27,7 @@ function BottomNavigation(): JSX.Element {
   return (
     <AppShell.Footer>
       <Group grow gap={0} className="tab-bar">
-        {tabs.map(({ path, label, icon: Icon }) => {
+        {tabs.map(({ path, label}) => {
           const isActive = location.pathname === path;
           
           return (
@@ -34,7 +35,7 @@ function BottomNavigation(): JSX.Element {
               key={path}
               to={path}
               style={{ textDecoration: 'none' }}
-              className={`tab-item ${isActive ? "active" : ""}`}
+              className={`${styles.tabItem} ${isActive ? "active" : ""}`}
             >
               <Stack
                 h={40}
@@ -42,7 +43,6 @@ function BottomNavigation(): JSX.Element {
                 justify='center'
                 gap={0}
               >
-                {/* <Icon size={20} /> */}
                 <Text size='md'>
                   {label}
                 </Text>

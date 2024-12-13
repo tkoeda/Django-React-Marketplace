@@ -1,0 +1,6 @@
+.tabItem {
+  transition: background-color 0.2s ease;
+}
+.tabItem:hover {
+  background-color: var(--color-background-primary-highlight);
+}/*# sourceMappingURL=BottomNavigation.module.css.map */
