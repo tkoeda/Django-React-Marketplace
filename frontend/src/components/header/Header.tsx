@@ -29,7 +29,7 @@ function Header({ isMobile }: HeaderProps) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        logout();
+        logout(false);
     };
 
     const handleSellClick = () => {
@@ -98,12 +98,18 @@ function Header({ isMobile }: HeaderProps) {
             ) : (
                 <>
                     <NavButton to="/login" label="Login" />
-                    <NavButton to="/register" label="Register" variant="default" />
+                    <NavButton
+                        to="/register"
+                        label="Register"
+                        variant="default"
+                    />
                 </>
             )}
             {!isMobile && (
                 <>
-                    {isLoggedIn && <NavButton to="/mypage" icon={<IconUser />} />}
+                    {isLoggedIn && (
+                        <NavButton to="/mypage" icon={<IconUser />} />
+                    )}
                     <NavButton
                         onClick={handleSellClick}
                         label="Sell"

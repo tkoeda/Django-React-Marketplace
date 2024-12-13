@@ -1,8 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Container, LoadingOverlay } from "@mantine/core";
+import {
+    Container,
+    Center,
+    Loader,
+    Grid,
+    Card,
+    Text,
+    Image,
+    Title,
+    Stack,
+} from "@mantine/core";
 import api from "../../api";
-import "./Home.css";
+import styles from "./Home.module.css";
 
 interface Listing {
     id: number;
@@ -32,47 +42,80 @@ function Home() {
                 "An error occurred while fetching listings. Please try again later."
             );
         } finally {
-            setLoading(true);
+            setLoading(false);
         }
     };
 
     if (error) {
-        return <div>Error: {error.message}</div>;
+        return (
+            <Center>
+                <Text c="red" fw={500}>
+                    {error.message}
+                </Text>
+            </Center>
+        );
     }
 
     return (
-        <Container className="container">
-            <h1>Furniture Listings</h1>
-            <LoadingOverlay visible={loading} zIndex={-100} overlayProps={{ color: 'var(--color-background-primary'}}>
-                {listings.length > 0 ? (
-                    <ul className="listings-list">
+        <Container size="xl" py="xl">
+            <Stack gap="xl">
+                <Title order={1} ta="center">
+                    Furniture Listings
+                </Title>
+
+                {loading ? (
+                    <Center h={200}>
+                        <Loader size="xl" />
+                    </Center>
+                ) : listings.length > 0 ? (
+                    <Grid>
                         {listings.map((listing) => (
-                            <li key={listing.id} className="listing-item">
-                                <Link
+                            <Grid.Col
+                                key={listing.id}
+                                span={{ base: 12, sm: 6, md: 4, lg: 3 }}
+                            >
+                                <Card
+                                    component={Link}
                                     to={`/listings/${listing.id}`}
-                                    className="listing-link"
+                                    padding="md"
+                                    radius="md"
+                                    className={styles["card"]}
                                 >
-                                    <div className="listing-card">
-                                        <div className="image-container">
-                                            <img
-                                                src={listing.thumbnail}
-                                                alt={listing.title}
-                                                className="listing-image"
-                                            />
-                                        </div>
-                                        <div className="content">
-                                            <h2>{listing.title}</h2>
-                                            <p>Price: ${listing.price}</p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </li>
+                                    <Card.Section className={styles["card-section-image"]}>
+                                        <Image
+                                            src={listing.thumbnail}
+                                            height="100%"
+                                            width="100%"
+                                            alt={listing.title}
+                                            fallbackSrc="https://placehold.co/200x200"
+                                            fit="contain"
+                                        />
+                                    </Card.Section>
+                                    <Card.Section className={styles["card-section-text"]}> 
+                                        <Text fw={500} size="lg" className={styles["title-text"]}>
+                                            {listing.title}
+                                        </Text>
+                                        <Text
+                                            size="md"
+                                            fw={700}
+                                            c="white"
+                                            className={styles["price-text"]}
+                                        >
+                                            ${listing.price}
+                                        </Text>
+                                    </Card.Section>
+                                </Card>
+                            </Grid.Col>
                         ))}
-                    </ul>
+                    </Grid>
                 ) : (
-                    <p className="no-listings">No listings found.</p>
+                    <Center>
+                        <Text size="lg" c="dimmed">
+                            No listings found.
+                        </Text>
+                    </Center>
                 )}
-            </LoadingOverlay>
+            </Stack>
         </Container>
     );
 }

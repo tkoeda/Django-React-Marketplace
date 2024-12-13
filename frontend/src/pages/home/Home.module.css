@@ -1,0 +1,12 @@
+.card .card-section-text {
+  margin-top: var(--spacing-xs);
+  padding: 0 var(--spacing-xs);
+}
+.card .card-section-text .title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card .card-section-text .price-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}/*# sourceMappingURL=Home.module.css.map */

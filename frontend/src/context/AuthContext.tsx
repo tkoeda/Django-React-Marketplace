@@ -5,7 +5,7 @@ import {
     useEffect,
     ReactNode,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN, USER_ID } from "../constants";
 
 import api from "../api";
@@ -13,7 +13,7 @@ import api from "../api";
 interface AuthContextType {
     isLoggedIn: boolean;
     login: (access: string, refresh: string, userId: string) => void;
-    logout: () => void;
+    logout: (redirectToLogin: boolean ) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,6 +25,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
+    const location = useLocation();
     const navigate = useNavigate();
     const login = (access: string, refresh: string, userId: string) => {
         localStorage.setItem(ACCESS_TOKEN, access);
@@ -33,12 +34,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setIsLoggedIn(true);
     };
 
-    const logout = () => {
+    const logout = (redirectToLogin: boolean = false) => {
         localStorage.clear();
         setIsLoggedIn(false);
-        navigate("/")
+        navigate(redirectToLogin ? "/login" : "/");
     };
-
     const refreshToken = async () => {
         try {
             const refreshToken = localStorage.getItem(REFRESH_TOKEN);
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 throw new Error("No refresh token found");
             }
             const response = await api.post(
-                "/api/token/refresh/", // Remove baseURL since api instance already has it
+                "/api/token/refresh/", 
                 { refresh: refreshToken }
             );
 
@@ -79,7 +79,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                         return api(originalRequest);
                     } else {
                         // Token refresh failed
-                        logout();
+                        logout(true);
                         return Promise.reject(error);
                     }
                 }
