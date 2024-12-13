@@ -5,6 +5,7 @@ import {
     useEffect,
     ReactNode,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN, USER_ID } from "../constants";
 
 import api from "../api";
@@ -24,6 +25,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
+    const navigate = useNavigate();
     const login = (access: string, refresh: string, userId: string) => {
         localStorage.setItem(ACCESS_TOKEN, access);
         localStorage.setItem(REFRESH_TOKEN, refresh);
@@ -34,6 +36,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const logout = () => {
         localStorage.clear();
         setIsLoggedIn(false);
+        navigate("/")
     };
 
     const refreshToken = async () => {
