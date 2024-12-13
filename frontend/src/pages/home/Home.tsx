@@ -32,7 +32,7 @@ function Home() {
                 "An error occurred while fetching listings. Please try again later."
             );
         } finally {
-            setLoading(false);
+            setLoading(true);
         }
     };
 
@@ -43,7 +43,7 @@ function Home() {
     return (
         <Container className="container">
             <h1>Furniture Listings</h1>
-            <LoadingOverlay visible={loading}>
+            <LoadingOverlay visible={loading} zIndex={-100} overlayProps={{ color: 'var(--color-background-primary'}}>
                 {listings.length > 0 ? (
                     <ul className="listings-list">
                         {listings.map((listing) => (
