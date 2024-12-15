@@ -20,6 +20,7 @@ class ListingImageSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj):
         if obj.image:
+            print(obj.image.url)
             return obj.image.url
         return None
 
@@ -55,24 +56,6 @@ class ListingListSerializer(serializers.ModelSerializer):
             "category",
             "thumbnail",
         ]
-
-    # def get_thumbnail(self, obj):
-    #     thumbnail_image = obj.images.order_by("order").first()
-    #     if thumbnail_image:
-    #         return thumbnail_image.image.url
-    #     return None
-
-    # def to_representation(self, instance):
-    #     representation = super().to_representation(instance)
-    #     thumbnail_image = instance.images.order_by("order").first()
-    #     if thumbnail_image:
-    #         representation["thumbnail"] = (
-    #             f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{thumbnail_image.image.name}"
-    #         )
-    #     else:
-    #         representation["thumbnail"] = None
-    #     return representation
-
 
 class ListingDetailSerializer(serializers.ModelSerializer):
     condition_display = serializers.CharField(

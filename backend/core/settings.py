@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import environ
 import os
+import base64
 
 env = environ.Env(
     # set casting, default value
@@ -163,33 +164,15 @@ CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'users.User'
 
-# AWS credentials
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-
-# Storage Configurations
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        "OPTIONS": {
-            "access_key": env('AWS_ACCESS_KEY_ID'),
-            "secret_key": env('AWS_SECRET_ACCESS_KEY'),
-            "bucket_name": env('AWS_STORAGE_BUCKET_NAME'),
-            "region_name": env('AWS_S3_REGION_NAME'),
-            "custom_domain": env('CLOUDFRONT_DISTRIBUTION_DOMAIN_NAME'),
-            "file_overwrite": False,
-            "default_acl": None,
-            "querystring_expire": 600,
-        }
-    },
-    "staticfiles": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        "OPTIONS": {
-            "location": "static",
-            "bucket_name": env('AWS_STORAGE_BUCKET_NAME'),
-            "region_name": env('AWS_S3_REGION_NAME'),
-            "custom_domain": env('CLOUDFRONT_DISTRIBUTION_DOMAIN_NAME'),
-        }
-    }
-}
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')  # Replace with your actual bucket name
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_EXPIRE = 600
+AWS_S3_CUSTOM_DOMAIN = env('CLOUDFRONT_DISTRIBUTION_DOMAIN_NAME')
+# AWS_CLOUDFRONT_KEY_ID = env.str('AWS_CLOUDFRONT_KEY_ID').strip()
+# AWS_CLOUDFRONT_KEY = env.str('AWS_CLOUDFRONT_KEY', multiline=True).strip()
 

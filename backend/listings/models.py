@@ -7,6 +7,8 @@ from django.core.validators import ValidationError
 from PIL import Image
 import io
 from django.db import transaction
+from storages.backends.s3boto3 import S3Boto3Storage
+
 import logging
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
@@ -179,8 +181,6 @@ class FurnitureListing(models.Model):
         return None
 
 def listing_path(instance, filename):
-    # Get the file extension
-    ext = "jpg"
     ext = filename.split(".")[-1]
 
     return f"listings/{instance.listing.id}/{uuid.uuid4()}.{ext}"
@@ -196,7 +196,6 @@ class CompressedImageField(models.ImageField):
         if file and not file._committed:
             image = Image.open(file)
 
-            # Convert image to RGB if it's not
             if image.mode != "RGB":
                 image = image.convert("RGB")
 
@@ -217,7 +216,7 @@ class CompressedImageField(models.ImageField):
             image = image.crop((left, top, right, bottom))
 
             # Resize to 1080x1080
-            image = image.resize((self.size, self.size), Image.LANCZOS)
+            image = image.resize((self.max_width, self.max_width), Image.LANCZOS)
 
             output = io.BytesIO()
             image.save(output, format="JPEG", quality=self.quality, optimize=True)
@@ -239,7 +238,7 @@ class ListingImage(models.Model):
         FurnitureListing, on_delete=models.CASCADE, related_name="images"
     )
     image = CompressedImageField(
-        storage=None,
+        storage=S3Boto3Storage(),
         upload_to=listing_path,
     )
     image_name = models.CharField(max_length=255, unique=True, blank=True)
