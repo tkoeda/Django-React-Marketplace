@@ -3,6 +3,9 @@
 ## Project Overview
 Furniture Marketplace is a full-stack web application that allows users to buy and sell furniture items. It features a React frontend for a smooth user experience and a Django backend for robust data management and API services. The application utilizes AWS S3 for image storage and CloudFront for efficient content delivery.
 
+## Live Demo
+The application is deployed and accessible at: taikoeda.jp
+
 ## Key Features
 - [x] User authentication and authorization
 - [x] Listing creation, management, and browsing
@@ -10,9 +13,8 @@ Furniture Marketplace is a full-stack web application that allows users to buy a
 - [x] Search and filter functionality for furniture items
 - [x] Responsive design for various devices
 - [ ] Update styling
-- [ ]Implement real-time messaging between buyers and sellers
+- [ ] Implement real-time messaging between buyers and sellers
 - [ ] Add a rating system for users
-- [ ]Integrate a payment gateway for in-app transactions
 - [ ] Ability to favorite/unfavorite listings
 - [ ] Connect a payment service (Stripe)
 
