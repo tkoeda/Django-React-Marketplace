@@ -1,17 +1,12 @@
 from django.db import models
 from django.conf import settings
-from django.utils.text import slugify
-from storages.backends.s3boto3 import S3Boto3Storage
 import uuid
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
-from django.core.files.base import ContentFile
-from django.core.validators import MinValueValidator
 from django.core.validators import ValidationError
 from PIL import Image
 import io
 from django.db import transaction
-from decimal import Decimal
 import logging
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
@@ -179,8 +174,8 @@ class FurnitureListing(models.Model):
     @property
     def thumbnail(self):
         thumbnail_image = self.images.order_by("order").first()
-        if thumbnail_image:
-            return f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{thumbnail_image.image.name}"
+        if thumbnail_image and thumbnail_image.image:
+            return thumbnail_image.image.url
         return None
 
 def listing_path(instance, filename):
@@ -239,13 +234,12 @@ class CompressedImageField(models.ImageField):
 
         return model_instance.image
 
-
 class ListingImage(models.Model):
     listing = models.ForeignKey(
         FurnitureListing, on_delete=models.CASCADE, related_name="images"
     )
     image = CompressedImageField(
-        storage=S3Boto3Storage(),
+        storage=None,
         upload_to=listing_path,
     )
     image_name = models.CharField(max_length=255, unique=True, blank=True)

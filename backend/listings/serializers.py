@@ -20,7 +20,7 @@ class ListingImageSerializer(serializers.ModelSerializer):
 
     def get_image_url(self, obj):
         if obj.image:
-            return f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{obj.image.name}"
+            return obj.image.url
         return None
 
 
