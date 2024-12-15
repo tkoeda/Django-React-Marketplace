@@ -88,6 +88,9 @@ local_settings.py
 .env
 db.sqlite3
 
+private_key.pem
+public_key.pem
+
 # Visual Studio Code # 
 .vscode/* 
 !.vscode/settings.json 
