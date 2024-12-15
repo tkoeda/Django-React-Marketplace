@@ -65,33 +65,25 @@ const ListingGrid: FC<ListingGridProps> = ({
             style={{ cursor: "pointer" }}
             className={styles.card}
         >
-            <Group align="center" wrap="nowrap" gap="lg">
-                {item.thumbnail ? (
-                    <Image
-                        src={item.thumbnail}
-                        height={100}
-                        width={100}
-                        radius="md"
-                        alt={item.title}
-                        style={{ flexShrink: 0 }}
-                    />
-                ) : (
-                    <div
-                        className={styles.noPhoto}
-                        style={{
-                            height: 100,
-                            width: 100,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            borderRadius: "var(--mantine-radius-md)",
-                            flexShrink: 0,
-                            background: "var(--color-background-secondary-highlight)",
-                        }}
-                    >
-                        <Text size="sm" c="dimmed" ta="center">No <br/>Photo</Text>
-                    </div>
-                )}
+            <Group align="center" wrap="nowrap" gap="lg" mt="sm">
+                <figure>
+                    {item.thumbnail ? (
+                        <Image
+                            className={styles.thumbnail}
+                            src={item.thumbnail}
+                            height={100}
+                            width={100}
+                            radius="md"
+                            fit="contain"
+                            alt={item.title}
+                        />
+                    ) : (
+                        <Text size="sm" c="dimmed" ta="center">
+                            No <br />
+                            Photo
+                        </Text>
+                    )}
+                </figure>
                 <Stack gap={0}>
                     <Text size="lg">{item.title || "-"}</Text>
                     <Group justify="space-between" mt="auto">

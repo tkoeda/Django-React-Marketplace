@@ -100,19 +100,7 @@ function ListingDetailPage() {
                                 withIndicators
                                 height={500}
                                 slideSize="100%"
-                                slideGap="md"
                                 loop
-                                align="start"
-                                styles={{
-                                    indicator: {
-                                        width: 12,
-                                        height: 4,
-                                        transition: 'width 250ms ease',
-                                        '&[data-active]': {
-                                            width: 40,
-                                        },
-                                    },
-                                }}
                             >
                                 {listing.images?.map((image, index) => (
                                     <Carousel.Slide key={index}>

@@ -167,7 +167,11 @@ function ListingForm(): JSX.Element {
         const formData = new FormData();
 
         Object.entries(form.values).forEach(([key, value]) => {
-            formData.append(key, value.toString());
+            if (value != null) {
+                formData.append(key, value.toString());
+            } else {
+                formData.append(key, ""); 
+            }
         });
 
         formData.set("status", action === "publish" ? "published" : "draft");
