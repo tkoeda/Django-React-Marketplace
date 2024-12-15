@@ -23,7 +23,11 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    const accessToken = localStorage.getItem(ACCESS_TOKEN);
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+    return !!(accessToken && refreshToken);
+});
 
     const location = useLocation();
     const navigate = useNavigate();
