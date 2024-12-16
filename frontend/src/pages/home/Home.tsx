@@ -10,9 +10,12 @@ import {
     Image,
     Title,
     Stack,
+    Group
 } from "@mantine/core";
 import api from "../../api";
 import styles from "./Home.module.css";
+
+import { IconHeart } from '@tabler/icons-react';
 
 interface Listing {
     id: number;
@@ -59,7 +62,7 @@ function Home() {
     }
 
     return (
-        <Container size="xl" py="xl">
+        <Container fluid py="xl">
             <Stack gap="xl">
                 <Title order={1} ta="center">
                     Furniture Listings
@@ -74,7 +77,7 @@ function Home() {
                         {listings.map((listing) => (
                             <Grid.Col
                                 key={listing.id}
-                                span={{ base: 12, sm: 6, md: 4, lg: 3 }}
+                                span={2.4}
                             >
                                 <Card
                                     component={Link}
@@ -83,17 +86,16 @@ function Home() {
                                     radius="md"
                                     className={styles["card"]}
                                 >
-                                    <Card.Section
-                                        className={styles["card-section-image"]}
-                                    >
-                                        <Image
-                                            src={listing.thumbnail}
-                                            height="100%"
-                                            width="100%"
-                                            alt={listing.title}
-                                            fallbackSrc="https://placehold.co/200x200"
-                                            fit="contain"
-                                        />
+                                    <Card.Section>
+                                        <figure className={styles["image-container"]}>
+                                            <Image
+                                                className={styles.image}
+                                                src={listing.thumbnail}
+                                                alt={listing.title}
+                                                fallbackSrc="https://placehold.co/200x200"
+                                                fit="contain"
+                                            />
+                                        </figure>
                                     </Card.Section>
                                     <Card.Section
                                         className={styles["card-section-text"]}
@@ -105,14 +107,17 @@ function Home() {
                                         >
                                             {listing.title}
                                         </Text>
-                                        <Text
-                                            size="md"
-                                            fw={700}
-                                            c="white"
-                                            className={styles["price-text"]}
-                                        >
-                                            ${listing.price}
-                                        </Text>
+                                        <Group justify="space-between">
+                                            <Text
+                                                size="md"
+                                                fw={700}
+                                                c="white"
+                                                className={styles["price-text"]}
+                                            >
+                                                ${listing.price}
+                                            </Text>
+                                            {/* <IconHeart stroke={1} className={styles["heart-icon"]}/> */}
+                                        </Group>
                                     </Card.Section>
                                 </Card>
                             </Grid.Col>

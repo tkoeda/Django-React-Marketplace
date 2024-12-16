@@ -1,3 +1,22 @@
+.card {
+  background-color: var(--color-background-primary);
+  max-width: 300px;
+}
+.card .image-container {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-background-secondary-highlight);
+}
+.card .image-container .image {
+  flex-shrink: 0;
+  aspect-ratio: 1/1;
+}
 .card .card-section-text {
   margin-top: var(--spacing-xs);
   padding: 0 var(--spacing-xs);
@@ -9,4 +28,11 @@
 .card .card-section-text .price-text {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.card .card-section-text .heart-icon {
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+.card .card-section-text .heart-icon:hover {
+  transform: scale(1.1);
 }/*# sourceMappingURL=Home.module.css.map */

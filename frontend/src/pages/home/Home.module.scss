@@ -1,11 +1,28 @@
 .card {
-  .card-section-image {
+  background-color: var(--color-background-primary);
+  max-width: 300px;
 
+  .image-container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-background-secondary-highlight);
+
+    .image {
+      flex-shrink: 0;
+      aspect-ratio: 1/1;
+    }
   }
 
   .card-section-text {
     margin-top: var(--spacing-xs);
     padding: 0 var(--spacing-xs);
+
     .title-text {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -16,5 +33,13 @@
       text-overflow: ellipsis;
     }
 
+    .heart-icon {
+      transition: transform 0.2s ease;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   }
 }
