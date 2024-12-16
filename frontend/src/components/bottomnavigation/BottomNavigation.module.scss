@@ -1,5 +1,6 @@
 .tabItem {
     transition: background-color 0.2s ease;
+    color: var(--color-text-primary);
 
     &:hover {
         background-color: var(--color-background-primary-highlight);
